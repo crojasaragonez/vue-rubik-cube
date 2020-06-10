@@ -1,7 +1,7 @@
 import { Cell } from './Cell';
 import { SidePosition, Color } from '../enums';
 
-class Side {
+export class Side {
   cells: Cell[][];
   constructor(color: Color, public position: SidePosition) {
     this.cells = [

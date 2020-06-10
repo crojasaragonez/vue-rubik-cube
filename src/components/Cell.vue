@@ -35,9 +35,7 @@
 }
 </style>
 <template>
-  <div class="cell" v-bind:class="color">
-    {{x}},{{y}}
-  </div>
+  <div class="cell" v-bind:class="color">{{ x }},{{ y }}</div>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";

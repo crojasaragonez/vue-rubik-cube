@@ -49,7 +49,11 @@
 <template>
   <div>
     <a href="https://github.com/crojasaragonez/angular-rubik-cube">
-      <img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png" alt="Fork me on GitHub">
+      <img
+        style="position: absolute; top: 0; left: 0; border: 0;"
+        src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"
+        alt="Fork me on GitHub"
+      />
     </a>
     <div class="cube-container">
       <div class="cube" style="transform: rotateX(-18deg) rotateY(36deg)">
@@ -59,13 +63,12 @@
         <Side class="side left"></Side>
         <Side class="side right"></Side>
         <Side class="side back"></Side>
-        <!-- <app-side *ngFor="let side of cube.allSides()" class="side" [cube]="cube" [side]="side" [ngClass]="side.position"></app-side> -->
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, /*Prop,*/ Vue } from "vue-property-decorator";
 import Side from "./Side.vue";
 
 @Component({

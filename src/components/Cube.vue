@@ -1,52 +1,49 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-:host {
-  --cube-size: 30vh;
-  --side-size: calc(var(--cube-size) / 2);
-  --side-size-opposite: calc((var(--cube-size) / 2) * -1);
-}
 .cube-container {
   perspective: 1000px;
-  width: var(--cube-size);
-  height: var(--cube-size);
+  width: 30vh;
+  height: 30vh;
 }
 .cube {
   height: 100%;
   transform-style: preserve-3d;
 }
+
+.side {
+  position: absolute;
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.1), 0 0 50px rgba(0, 0, 0, 0.3);
+  opacity: 0.8;
+  width: 100%;
+  height: 100%;
+}
+
 .front {
-  transform: translate3d(0, 0, var(--side-size));
+  transform: translate3d(0, 0, calc(30vh / 2));
 }
 
 .top {
-  transform: rotateX(90deg) translate3d(0, 0, var(--side-size));
+  transform: rotateX(90deg) translate3d(0, 0, calc(30vh / 2));
 }
 
 .bottom {
-  transform: rotateX(-90deg) translate3d(0, 0, var(--side-size));
+  transform: rotateX(-90deg) translate3d(0, 0, calc(30vh / 2));
 }
 
 .left {
   left: 50%;
-  margin-left: var(--side-size-opposite);
-  transform: rotateY(-90deg) translate3d(0, 0, var(--side-size));
+  margin-left: calc((30vh / 2) * -1);
+  transform: rotateY(-90deg) translate3d(0, 0, calc(30vh / 2));
 }
 
 .right {
   left: 50%;
-  margin-left: var(--side-size-opposite);
-  transform: rotateY(90deg) translate3d(0, 0, var(--side-size));
+  margin-left: calc((30vh / 2) * -1);
+  transform: rotateY(90deg) translate3d(0, 0, calc(30vh / 2));
 }
 
 .back {
-  transform: rotateX(180deg) translate3d(0, 0, var(--side-size));
-}
-
-.side {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-wrap: wrap;
+  transform: rotateX(180deg) translate3d(0, 0, calc(30vh / 2));
 }
 </style>
 <template>

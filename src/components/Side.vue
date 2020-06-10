@@ -9,15 +9,17 @@
 </style>
 <template>
   <div>
-    <Cell color="red" x=0 y=0></Cell>
-    <Cell color="red" x=0 y=1></Cell>
-    <Cell color="red" x=0 y=2></Cell>
-    <Cell color="red" x=1 y=0></Cell>
-    <Cell color="red" x=1 y=1></Cell>
-    <Cell color="red" x=1 y=2></Cell>
-    <Cell color="red" x=2 y=0></Cell>
-    <Cell color="red" x=2 y=1></Cell>
-    <Cell color="red" x=2 y=2></Cell>
+    <div class="side">
+      <Cell color="red" x=0 y=0></Cell>
+      <Cell color="red" x=0 y=1></Cell>
+      <Cell color="red" x=0 y=2></Cell>
+      <Cell color="red" x=1 y=0></Cell>
+      <Cell color="red" x=1 y=1></Cell>
+      <Cell color="red" x=1 y=2></Cell>
+      <Cell color="red" x=2 y=0></Cell>
+      <Cell color="red" x=2 y=1></Cell>
+      <Cell color="red" x=2 y=2></Cell>
+    </div>
   </div>
 </template>
 <script lang="ts">

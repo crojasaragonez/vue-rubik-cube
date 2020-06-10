@@ -1,9 +1,9 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style scoped lang="css">
 .cube-container {
   perspective: 1000px;
-  width: 30vh;
-  height: 30vh;
+  width: var(--cube-size);
+  height: var(--cube-size);
 }
 .cube {
   height: 100%;
@@ -19,31 +19,31 @@
 }
 
 .front {
-  transform: translate3d(0, 0, calc(30vh / 2));
+  transform: translate3d(0, 0, var(--side-size));
 }
 
 .top {
-  transform: rotateX(90deg) translate3d(0, 0, calc(30vh / 2));
+  transform: rotateX(90deg) translate3d(0, 0, var(--side-size));
 }
 
 .bottom {
-  transform: rotateX(-90deg) translate3d(0, 0, calc(30vh / 2));
+  transform: rotateX(-90deg) translate3d(0, 0, var(--side-size));
 }
 
 .left {
   left: 50%;
-  margin-left: calc((30vh / 2) * -1);
-  transform: rotateY(-90deg) translate3d(0, 0, calc(30vh / 2));
+  margin-left: var(--side-size-opposite);
+  transform: rotateY(-90deg) translate3d(0, 0, var(--side-size));
 }
 
 .right {
   left: 50%;
-  margin-left: calc((30vh / 2) * -1);
-  transform: rotateY(90deg) translate3d(0, 0, calc(30vh / 2));
+  margin-left: var(--side-size-opposite);
+  transform: rotateY(90deg) translate3d(0, 0, var(--side-size));
 }
 
 .back {
-  transform: rotateX(180deg) translate3d(0, 0, calc(30vh / 2));
+  transform: rotateX(180deg) translate3d(0, 0, var(--side-size));
 }
 </style>
 <template>

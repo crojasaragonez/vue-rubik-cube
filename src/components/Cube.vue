@@ -57,12 +57,7 @@
     </a>
     <div class="cube-container">
       <div class="cube" style="transform: rotateX(-18deg) rotateY(36deg)">
-        <Side class="side front"></Side>
-        <Side class="side top"></Side>
-        <Side class="side bottom"></Side>
-        <Side class="side left"></Side>
-        <Side class="side right"></Side>
-        <Side class="side back"></Side>
+        <Side v-for="side in cube.allSides()" :key="side.position" class="side" :class="side.position"></Side>
       </div>
     </div>
   </div>
@@ -70,11 +65,18 @@
 <script lang="ts">
 import { Component, /*Prop,*/ Vue } from "vue-property-decorator";
 import Side from "./Side.vue";
+import { Cube } from '../models';
 
 @Component({
   components: {
     Side
   }
 })
-export default class Cube extends Vue {}
+export default class CubeComponent extends Vue {
+  cube: Cube
+  constructor() {
+    super();
+    this.cube = new Cube();
+  }
+}
 </script>

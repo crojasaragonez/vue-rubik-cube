@@ -8,7 +8,7 @@
 }
 </style>
 <template>
-  <div class="side">
+  <div>
     <Cell color="red" x=0 y=0></Cell>
     <Cell color="red" x=0 y=1></Cell>
     <Cell color="red" x=0 y=2></Cell>

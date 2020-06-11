@@ -59,8 +59,7 @@
       <div
         class="cube"
         :style="{
-          transform:
-            'rotateX(' + cube.rotateX + 'deg) rotateY(' + cube.rotateY + 'deg)'
+          transform: 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)'
         }"
       >
         <SideComponent
@@ -75,7 +74,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, /*Prop,*/ Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import SideComponent from "./SideComponent.vue";
 import { Cube } from "../models";
 
@@ -85,6 +84,8 @@ import { Cube } from "../models";
   }
 })
 export default class CubeComponent extends Vue {
+  @Prop() private rotateX!: number;
+  @Prop() private rotateY!: number;
   cube: Cube;
   constructor() {
     super();

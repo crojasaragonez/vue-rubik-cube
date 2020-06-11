@@ -9,8 +9,8 @@
 }
 </style>
 <template>
-  <div class="container">
-    <CubeComponent></CubeComponent>
+  <div class="container" @mousedown="mousedown" @mouseup="mouseup" @mousemove="mousemove">
+    <CubeComponent :rotateX.sync=rotateX :rotateY.sync=rotateY></CubeComponent>
   </div>
 </template>
 
@@ -23,5 +23,30 @@ import CubeComponent from "./components/CubeComponent.vue";
     CubeComponent
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  rotateX = -18;
+  rotateY = 36;
+  // eslint-disable-next-line
+  last: any;
+  mouseDown = false;
+
+  mousedown(event: MouseEvent) {
+    this.mouseDown = true;
+    this.last = event;
+  }
+
+  mouseup() {
+    this.mouseDown = false;
+  }
+
+  mousemove(event: MouseEvent) {
+    event.preventDefault();
+    if (!this.mouseDown) {
+      return;
+    }
+    this.rotateX -= event.clientY - this.last.clientY;
+    this.rotateY += event.clientX - this.last.clientX;
+    this.last = event;
+  }
+}
 </script>

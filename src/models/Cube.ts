@@ -1,10 +1,9 @@
-import { Side } from './Side';
-import { SidePosition, Color } from '../enums';
+import { Side } from "./Side";
+import { SidePosition, Color } from "../enums";
+import { CubeSides } from "./CubeSides";
 
 export class Cube {
-  sides: any
-  rotateX = -18;
-  rotateY = 36;
+  sides: CubeSides;
   constructor() {
     this.sides = {
       front: new Side(Color.Yellow, SidePosition.Front),
@@ -12,11 +11,18 @@ export class Cube {
       bottom: new Side(Color.Orange, SidePosition.Bottom),
       left: new Side(Color.Green, SidePosition.Left),
       right: new Side(Color.Blue, SidePosition.Right),
-      back: new Side(Color.White, SidePosition.Back),
-    }
+      back: new Side(Color.White, SidePosition.Back)
+    };
   }
 
   allSides() {
-    return [this.sides.front, this.sides.top, this.sides.bottom, this.sides.left, this.sides.right, this.sides.back];
+    return [
+      this.sides.front,
+      this.sides.top,
+      this.sides.bottom,
+      this.sides.left,
+      this.sides.right,
+      this.sides.back
+    ];
   }
 }

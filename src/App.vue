@@ -10,17 +10,17 @@
 </style>
 <template>
   <div class="container">
-    <Cube></Cube>
+    <CubeComponent></CubeComponent>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Cube from "./components/Cube.vue";
+import CubeComponent from "./components/CubeComponent.vue";
 
 @Component({
   components: {
-    Cube
+    CubeComponent
   }
 })
 export default class App extends Vue {}

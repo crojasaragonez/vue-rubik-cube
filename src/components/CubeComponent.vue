@@ -48,7 +48,7 @@
 </style>
 <template>
   <div>
-    <a href="https://github.com/crojasaragonez/angular-rubik-cube">
+    <a href="https://github.com/crojasaragonez/vue-rubik-cube">
       <img
         style="position: absolute; top: 0; left: 0; border: 0;"
         src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"
@@ -57,7 +57,12 @@
     </a>
     <div class="cube-container">
       <div class="cube" style="transform: rotateX(-18deg) rotateY(36deg)">
-        <Side v-for="side in cube.allSides()" :key="side.position" class="side" :class="side.position"></Side>
+        <Side
+          v-for="side in cube.allSides()"
+          :key="side.position"
+          class="side"
+          :class="side.position"
+        ></Side>
       </div>
     </div>
   </div>
@@ -65,7 +70,7 @@
 <script lang="ts">
 import { Component, /*Prop,*/ Vue } from "vue-property-decorator";
 import Side from "./Side.vue";
-import { Cube } from '../models';
+import { Cube } from "../models";
 
 @Component({
   components: {
@@ -73,7 +78,7 @@ import { Cube } from '../models';
   }
 })
 export default class CubeComponent extends Vue {
-  cube: Cube
+  cube: Cube;
   constructor() {
     super();
     this.cube = new Cube();

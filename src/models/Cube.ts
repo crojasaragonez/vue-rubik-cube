@@ -3,6 +3,8 @@ import { SidePosition, Color } from '../enums';
 
 export class Cube {
   sides: any
+  rotateX = -18;
+  rotateY = 36;
   constructor() {
     this.sides = {
       front: new Side(Color.Yellow, SidePosition.Front),

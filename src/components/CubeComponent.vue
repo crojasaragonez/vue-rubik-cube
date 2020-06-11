@@ -56,7 +56,13 @@
       />
     </a>
     <div class="cube-container">
-      <div class="cube" style="transform: rotateX(-18deg) rotateY(36deg)">
+      <div
+        class="cube"
+        :style="{
+          transform:
+            'rotateX(' + cube.rotateX + 'deg) rotateY(' + cube.rotateY + 'deg)'
+        }"
+      >
         <SideComponent
           v-for="side in cube.allSides()"
           :key="side.position"

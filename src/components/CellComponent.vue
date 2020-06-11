@@ -43,7 +43,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { Color } from "../enums";
 
 @Component
-export default class Cell extends Vue {
+export default class CellComponent extends Vue {
   @Prop() private color!: Color;
   @Prop() private x!: number;
   @Prop() private y!: number;

@@ -2,10 +2,11 @@ import { expect } from "chai";
 import { shallowMount } from "@vue/test-utils";
 import CellComponent from "@/components/CellComponent.vue";
 import { Color } from "@/enums";
+import { Cell } from "@/models";
 
 describe("CellComponent.vue", () => {
   const wrapper = shallowMount(CellComponent, {
-    propsData: { color: Color.Orange, x: 0, y: 0 }
+    propsData: { cell: new Cell(Color.Orange, 0, 0) }
   });
 
   it("has the right text", () => {

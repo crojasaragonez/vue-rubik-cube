@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Side } from "@/models";
-import { Color, SidePosition } from "@/enums";
+import { Color, SidePosition, Direction } from "@/enums";
 
 describe("Side.ts", () => {
   const side = new Side(Color.Red, SidePosition.Front);
@@ -29,5 +29,199 @@ describe("Side.ts", () => {
       ["10", "11", "12"],
       ["20", "21", "22"]
     ]);
+  });
+
+  describe("#xCells", () => {
+    context("when x is between the 0-2 range", () => {
+      it("picks the right cells", () => {
+        expect(side.xCells(0).map(c => [c.x, c.y])).to.eql([
+          [0, 0],
+          [0, 1],
+          [0, 2]
+        ]);
+      });
+    });
+
+    context("when x is > 2", () => {
+      it("returns an empty array", () => {
+        expect(side.xCells(3).map(c => [c.x, c.y])).to.eql([]);
+      });
+    });
+
+    context("when x is < 0", () => {
+      it("returns an empty array", () => {
+        expect(side.xCells(-1).map(c => [c.x, c.y])).to.eql([]);
+      });
+    });
+  });
+
+  describe("#yCells", () => {
+    context("when y is between the 0-2 range", () => {
+      it("picks the right cells", () => {
+        expect(side.yCells(0).map(c => [c.x, c.y])).to.eql([
+          [0, 0],
+          [1, 0],
+          [2, 0]
+        ]);
+      });
+    });
+
+    context("when y is > 2", () => {
+      it("returns an empty array", () => {
+        expect(side.yCells(3).map(c => [c.x, c.y])).to.eql([]);
+      });
+    });
+
+    context("when y is < 0", () => {
+      it("returns an empty array", () => {
+        expect(side.yCells(-1).map(c => [c.x, c.y])).to.eql([]);
+      });
+    });
+  });
+
+  describe("#next", () => {
+    context("front side", () => {
+      const side = new Side(Color.Yellow, SidePosition.Front);
+      context("when Direction is right", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Right)).to.eql(SidePosition.Left);
+        });
+      });
+      context("when Direction is left", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Left)).to.eql(SidePosition.Right);
+        });
+      });
+      context("when Direction is up", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Up)).to.eql(SidePosition.Bottom);
+        });
+      });
+      context("when Direction is down", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Down)).to.eql(SidePosition.Top);
+        });
+      });
+    });
+
+    context("right side", () => {
+      const side = new Side(Color.Blue, SidePosition.Right);
+      context("when Direction is right", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Right)).to.eql(SidePosition.Front);
+        });
+      });
+      context("when Direction is left", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Left)).to.eql(SidePosition.Back);
+        });
+      });
+      context("when Direction is up", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Up)).to.eql(SidePosition.Top);
+        });
+      });
+      context("when Direction is down", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Down)).to.eql(SidePosition.Bottom);
+        });
+      });
+    });
+
+    context("back side", () => {
+      const side = new Side(Color.White, SidePosition.Back);
+      context("when Direction is right", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Right)).to.eql(SidePosition.Right);
+        });
+      });
+      context("when Direction is left", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Left)).to.eql(SidePosition.Left);
+        });
+      });
+      context("when Direction is up", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Up)).to.eql(SidePosition.Top);
+        });
+      });
+      context("when Direction is down", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Down)).to.eql(SidePosition.Bottom);
+        });
+      });
+    });
+
+    context("left side", () => {
+      const side = new Side(Color.Green, SidePosition.Left);
+      context("when Direction is right", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Right)).to.eql(SidePosition.Back);
+        });
+      });
+      context("when Direction is left", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Left)).to.eql(SidePosition.Front);
+        });
+      });
+      context("when Direction is up", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Up)).to.eql(SidePosition.Top);
+        });
+      });
+      context("when Direction is down", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Down)).to.eql(SidePosition.Bottom);
+        });
+      });
+    });
+
+    context("top side", () => {
+      const side = new Side(Color.Red, SidePosition.Top);
+      context("when Direction is right", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Right)).to.eql(SidePosition.Right);
+        });
+      });
+      context("when Direction is left", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Left)).to.eql(SidePosition.Left);
+        });
+      });
+      context("when Direction is up", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Up)).to.eql(SidePosition.Front);
+        });
+      });
+      context("when Direction is down", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Down)).to.eql(SidePosition.Back);
+        });
+      });
+    });
+
+    context("bottom side", () => {
+      const side = new Side(Color.Orange, SidePosition.Bottom);
+      context("when Direction is right", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Right)).to.eql(SidePosition.Right);
+        });
+      });
+      context("when Direction is left", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Left)).to.eql(SidePosition.Left);
+        });
+      });
+      context("when Direction is up", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Up)).to.eql(SidePosition.Back);
+        });
+      });
+      context("when Direction is down", () => {
+        it("returns the correct next move", () => {
+          expect(side.next(Direction.Down)).to.eql(SidePosition.Front);
+        });
+      });
+    });
   });
 });

@@ -55,19 +55,29 @@
         alt="Fork me on GitHub"
       />
     </a>
+
+    <!-- horizontal debug -->
+    <h1>{{ cube.sides.front.cells[0][0].color }}</h1>
+    <h1>{{ cube.sides.front.cells[0][1].color }}</h1>
+    <h1>{{ cube.sides.front.cells[0][2].color }}</h1>
+
+    <!-- vertical debug -->
+    <!-- <h1>{{ cube.sides.front.cells[0][0].color }}</h1>
+    <h1>{{ cube.sides.front.cells[1][0].color }}</h1>
+    <h1>{{ cube.sides.front.cells[2][0].color }}</h1> -->
+
     <div class="cube-container">
       <div
         class="cube"
-        :style="{
-          transform: 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)'
-        }"
+        :style="{ transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)` }"
       >
         <SideComponent
-          v-for="side in cube.allSides()"
+          v-for="side in cube.allSides"
           :key="side.position"
           class="side"
-          :side="side"
+          :side.sync="side"
           :class="side.position"
+          @move="move"
         ></SideComponent>
       </div>
     </div>
@@ -76,7 +86,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import SideComponent from "./SideComponent.vue";
-import { Cube } from "../models";
+import { Cube, Cell, Side } from "../models";
+import { Direction } from "../enums";
 
 @Component({
   components: {
@@ -86,10 +97,17 @@ import { Cube } from "../models";
 export default class CubeComponent extends Vue {
   @Prop() private rotateX!: number;
   @Prop() private rotateY!: number;
-  cube: Cube;
-  constructor() {
-    super();
-    this.cube = new Cube();
+  public get cube(): Cube {
+    return this.$store.state.cube;
+  }
+
+  move(cell: Cell, direction: Direction, side: Side) {
+    this.$store.commit("move", {
+      cell: cell,
+      direction: direction,
+      side: side
+    });
+    this.$forceUpdate();
   }
 }
 </script>

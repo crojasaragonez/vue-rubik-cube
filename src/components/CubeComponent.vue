@@ -57,12 +57,12 @@
     </a>
     <div class="cube-container">
       <div class="cube" style="transform: rotateX(-18deg) rotateY(36deg)">
-        <Side
+        <SideComponent
           v-for="side in cube.allSides()"
           :key="side.position"
           class="side"
           :class="side.position"
-        ></Side>
+        ></SideComponent>
       </div>
     </div>
   </div>

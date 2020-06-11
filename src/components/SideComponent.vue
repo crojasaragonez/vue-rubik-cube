@@ -10,26 +10,29 @@
 <template>
   <div>
     <div class="side">
-      <Cell color="red" x="0" y="0"></Cell>
-      <Cell color="red" x="0" y="1"></Cell>
-      <Cell color="red" x="0" y="2"></Cell>
-      <Cell color="red" x="1" y="0"></Cell>
-      <Cell color="red" x="1" y="1"></Cell>
-      <Cell color="red" x="1" y="2"></Cell>
-      <Cell color="red" x="2" y="0"></Cell>
-      <Cell color="red" x="2" y="1"></Cell>
-      <Cell color="red" x="2" y="2"></Cell>
+      <CellComponent color="red" x="0" y="0"></CellComponent>
+      <CellComponent color="red" x="0" y="1"></CellComponent>
+      <CellComponent color="red" x="0" y="2"></CellComponent>
+      <CellComponent color="red" x="1" y="0"></CellComponent>
+      <CellComponent color="red" x="1" y="1"></CellComponent>
+      <CellComponent color="red" x="1" y="2"></CellComponent>
+      <CellComponent color="red" x="2" y="0"></CellComponent>
+      <CellComponent color="red" x="2" y="1"></CellComponent>
+      <CellComponent color="red" x="2" y="2"></CellComponent>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Cell from "./Cell.vue";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import CellComponent from "./CellComponent.vue";
+import { Side } from '../models';
 
 @Component({
   components: {
-    Cell
+    CellComponent
   }
 })
-export default class SideComponent extends Vue {}
+export default class SideComponent extends Vue {
+  @Prop() private side!: Side;
+}
 </script>

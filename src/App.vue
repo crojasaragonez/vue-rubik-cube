@@ -9,8 +9,16 @@
 }
 </style>
 <template>
-  <div class="container" @mousedown="mousedown" @mouseup="mouseup" @mousemove="mousemove">
-    <CubeComponent :rotateX.sync=rotateX :rotateY.sync=rotateY></CubeComponent>
+  <div
+    class="container"
+    @mousedown="mousedown"
+    @mouseup="mouseup"
+    @mousemove="mousemove"
+  >
+    <CubeComponent
+      :rotateX.sync="rotateX"
+      :rotateY.sync="rotateY"
+    ></CubeComponent>
   </div>
 </template>
 

@@ -31,5 +31,5 @@ import Cell from "./Cell.vue";
     Cell
   }
 })
-export default class Side extends Vue {}
+export default class SideComponent extends Vue {}
 </script>

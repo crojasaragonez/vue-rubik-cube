@@ -69,12 +69,12 @@
 </template>
 <script lang="ts">
 import { Component, /*Prop,*/ Vue } from "vue-property-decorator";
-import Side from "./Side.vue";
+import SideComponent from "./SideComponent.vue";
 import { Cube } from "../models";
 
 @Component({
   components: {
-    Side
+    SideComponent
   }
 })
 export default class CubeComponent extends Vue {

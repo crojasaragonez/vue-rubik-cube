@@ -10,22 +10,23 @@
 <template>
   <div>
     <div class="side">
-      <CellComponent color="red" x="0" y="0"></CellComponent>
-      <CellComponent color="red" x="0" y="1"></CellComponent>
-      <CellComponent color="red" x="0" y="2"></CellComponent>
-      <CellComponent color="red" x="1" y="0"></CellComponent>
-      <CellComponent color="red" x="1" y="1"></CellComponent>
-      <CellComponent color="red" x="1" y="2"></CellComponent>
-      <CellComponent color="red" x="2" y="0"></CellComponent>
-      <CellComponent color="red" x="2" y="1"></CellComponent>
-      <CellComponent color="red" x="2" y="2"></CellComponent>
+      <template v-for="(row, x_index) in side.cells">
+        <CellComponent
+          v-for="(cell, y_index) in row"
+          :key="cell"
+          :color="cell.color"
+          :class="side.position"
+          :x="x_index"
+          :y="y_index"
+        ></CellComponent>
+      </template>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import CellComponent from "./CellComponent.vue";
-import { Side } from '../models';
+import { Side } from "../models";
 
 @Component({
   components: {

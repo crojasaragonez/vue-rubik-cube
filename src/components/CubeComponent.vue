@@ -61,6 +61,7 @@
           v-for="side in cube.allSides()"
           :key="side.position"
           class="side"
+          :side="side"
           :class="side.position"
         ></SideComponent>
       </div>

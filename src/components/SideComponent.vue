@@ -13,7 +13,7 @@
       <template v-for="(row, x_index) in side.cells">
         <CellComponent
           v-for="(cell, y_index) in row"
-          :key="cell"
+          :key="`${x_index}${y_index}`"
           :color="cell.color"
           :class="side.position"
           :x="x_index"

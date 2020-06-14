@@ -10,14 +10,13 @@
 <template>
   <div>
     <div class="side">
-      <template v-for="(row, x_index) in side.cells">
+      <template v-for="row in side.cells">
         <CellComponent
-          v-for="(cell, y_index) in row"
-          :key="`${x_index}${y_index}`"
-          :color="cell.color"
+          v-for="cell in row"
+          :key="cell.key"
+          :cell.sync="cell"
           :class="side.position"
-          :x="x_index"
-          :y="y_index"
+          @move="move"
         ></CellComponent>
       </template>
     </div>
@@ -26,7 +25,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import CellComponent from "./CellComponent.vue";
-import { Side } from "../models";
+import { Side, Cell } from "../models";
+import { Direction } from "../enums";
 
 @Component({
   components: {
@@ -35,5 +35,8 @@ import { Side } from "../models";
 })
 export default class SideComponent extends Vue {
   @Prop() private side!: Side;
+  move(cell: Cell, direction: Direction) {
+    this.$emit("move", cell, direction, this.side);
+  }
 }
 </script>

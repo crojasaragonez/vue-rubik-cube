@@ -132,8 +132,8 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Direction } from "../enums";
-import { Cell } from "../models";
+import { Direction } from "@/enums";
+import { Cell } from "@/models";
 
 @Component
 export default class CellComponent extends Vue {

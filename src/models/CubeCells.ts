@@ -1,4 +1,4 @@
-import { Cell } from "./Cell";
+import { Cell } from "@/models";
 
 export interface CubeCells {
   front: Cell[];

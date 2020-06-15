@@ -1,5 +1,5 @@
-import { Cell } from "./Cell";
-import { SidePosition, Color, Direction } from "../enums";
+import { Cell } from "@/models";
+import { SidePosition, Color, Direction } from "@/enums";
 import { Navigation } from "@/navigation";
 
 export class Side {

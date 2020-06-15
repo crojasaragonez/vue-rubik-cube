@@ -1,4 +1,4 @@
-import { Side } from "./Side";
+import { Side } from "@/models";
 
 export interface CubeSides {
   front: Side;

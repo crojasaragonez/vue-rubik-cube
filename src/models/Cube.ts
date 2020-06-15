@@ -1,8 +1,5 @@
-import { Side } from "./Side";
-import { SidePosition, Color, Direction } from "../enums";
-import { CubeSides } from "./CubeSides";
-import { Cell } from "./Cell";
-import { CubeCells } from "./CubeCells";
+import { Side, CubeSides, Cell, CubeCells } from "@/models";
+import { SidePosition, Color, Direction } from "@/enums";
 
 export class Cube {
   sides: CubeSides;

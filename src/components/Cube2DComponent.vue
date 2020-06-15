@@ -91,8 +91,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import SideComponent from "./SideComponent.vue";
-import { Cube, Cell, Side } from "../models";
-import { Direction } from "../enums";
+import { Cube, Cell, Side } from "@/models";
+import { Direction } from "@/enums";
 
 @Component({
   components: {

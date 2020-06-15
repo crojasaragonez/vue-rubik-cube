@@ -1,8 +1,9 @@
 import { Cell } from "@/models";
 import { SidePosition, Color, Direction } from "@/enums";
 import { Navigation } from "@/navigation";
+import { PlainSide } from "@/interfaces";
 
-export class Side {
+export class Side implements PlainSide {
   public cells: Cell[][];
   navigation: Navigation = new Navigation();
   constructor(public color: Color, public position: SidePosition) {

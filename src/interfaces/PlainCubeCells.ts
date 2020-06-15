@@ -1,6 +1,6 @@
 import { Cell } from "@/models";
 
-export interface CubeCells {
+export interface PlainCubeCells {
   front: Cell[];
   top: Cell[];
   bottom: Cell[];

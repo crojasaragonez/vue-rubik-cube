@@ -1,9 +1,9 @@
-import { CubeSides, CubeCells } from "@/interfaces";
+import { PlainCubeSides, PlainCubeCells, PlainCube } from "@/interfaces";
 import { Side, Cell } from "@/models";
 import { SidePosition, Color, Direction } from "@/enums";
 
-export class Cube {
-  sides: CubeSides;
+export class Cube implements PlainCube {
+  sides: PlainCubeSides;
   constructor() {
     this.sides = {
       front: new Side(Color.Yellow, SidePosition.Front),
@@ -33,7 +33,7 @@ export class Cube {
   }
 
   private horizontalMove(side: Side, cell: Cell, direction: Direction) {
-    const original: CubeCells = {
+    const original: PlainCubeCells = {
       front: this.sides.front.xCells(cell.x),
       right: this.sides.right.xCells(cell.x),
       back: this.sides.back.xCells(cell.x),
@@ -50,7 +50,7 @@ export class Cube {
   }
 
   private verticalMove(side: Side, cell: Cell, direction: Direction) {
-    const original: CubeCells = {
+    const original: PlainCubeCells = {
       front: this.sides.front.yCells(cell.y),
       right: this.sides.right.yCells(cell.y),
       back: this.sides.back.yCells(cell.y),

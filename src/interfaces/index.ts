@@ -1,2 +1,5 @@
-export * from "./CubeSides";
-export * from "./CubeCells";
+export * from "./PlainCubeSides";
+export * from "./PlainCubeCells";
+export * from "./PlainSide";
+export * from "./PlainCell";
+export * from "./PlainCube";

@@ -1,6 +1,6 @@
 import { Side } from "@/models";
 
-export interface CubeSides {
+export interface PlainCubeSides {
   front: Side;
   top: Side;
   bottom: Side;

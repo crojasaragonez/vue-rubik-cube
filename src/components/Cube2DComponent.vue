@@ -1,6 +1,11 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="css">
-.top, .left, .front, .right, .bottom, .back  {
+.top,
+.left,
+.front,
+.right,
+.bottom,
+.back {
   width: 10vw;
   height: 10vw;
 }
@@ -19,22 +24,64 @@
       <table>
         <tr>
           <td></td>
-          <td><SideComponent :key="cube.sides.top.position" :side.sync="cube.sides.top" :class="cube.sides.top.position" @move="move"></SideComponent></td>
+          <td>
+            <SideComponent
+              :key="cube.sides.top.position"
+              :side.sync="cube.sides.top"
+              :class="cube.sides.top.position"
+              @move="move"
+            ></SideComponent>
+          </td>
           <td></td>
         </tr>
         <tr>
-          <td><SideComponent :key="cube.sides.left.position" :side.sync="cube.sides.left" :class="cube.sides.left.position" @move="move"></SideComponent></td>
-          <td><SideComponent :key="cube.sides.front.position" :side.sync="cube.sides.front" :class="cube.sides.front.position" @move="move"></SideComponent></td>
-          <td><SideComponent :key="cube.sides.right.position" :side.sync="cube.sides.right" :class="cube.sides.right.position" @move="move"></SideComponent></td>
+          <td>
+            <SideComponent
+              :key="cube.sides.left.position"
+              :side.sync="cube.sides.left"
+              :class="cube.sides.left.position"
+              @move="move"
+            ></SideComponent>
+          </td>
+          <td>
+            <SideComponent
+              :key="cube.sides.front.position"
+              :side.sync="cube.sides.front"
+              :class="cube.sides.front.position"
+              @move="move"
+            ></SideComponent>
+          </td>
+          <td>
+            <SideComponent
+              :key="cube.sides.right.position"
+              :side.sync="cube.sides.right"
+              :class="cube.sides.right.position"
+              @move="move"
+            ></SideComponent>
+          </td>
         </tr>
         <tr>
           <td></td>
-          <td><SideComponent :key="cube.sides.bottom.position" :side.sync="cube.sides.bottom" :class="cube.sides.bottom.position" @move="move"></SideComponent></td>
+          <td>
+            <SideComponent
+              :key="cube.sides.bottom.position"
+              :side.sync="cube.sides.bottom"
+              :class="cube.sides.bottom.position"
+              @move="move"
+            ></SideComponent>
+          </td>
           <td></td>
         </tr>
         <tr>
           <td></td>
-          <td><SideComponent :key="cube.sides.back.position" :side.sync="cube.sides.back" :class="cube.sides.back.position" @move="move"></SideComponent></td>
+          <td>
+            <SideComponent
+              :key="cube.sides.back.position"
+              :side.sync="cube.sides.back"
+              :class="cube.sides.back.position"
+              @move="move"
+            ></SideComponent>
+          </td>
           <td></td>
         </tr>
       </table>
@@ -42,7 +89,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import SideComponent from "./SideComponent.vue";
 import { Cube, Cell, Side } from "../models";
 import { Direction } from "../enums";

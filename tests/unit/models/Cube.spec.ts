@@ -157,7 +157,7 @@ describe("Cube.ts", () => {
       });
     });
 
-    xcontext(`when cell ${x},${y} was moved in Direction.Up`, () => {
+    context(`when cell ${x},${y} was moved in Direction.Up`, () => {
       beforeEach(() => {
         cube = new Cube();
         const side = randomVerticalSide(cube);
@@ -197,7 +197,7 @@ describe("Cube.ts", () => {
       });
     });
 
-    xcontext(`when cell ${x},${y} was moved in Direction.Down`, () => {
+    context(`when cell ${x},${y} was moved in Direction.Down`, () => {
       beforeEach(() => {
         cube = new Cube();
         const side = randomVerticalSide(cube);

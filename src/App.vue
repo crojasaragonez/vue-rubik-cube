@@ -25,10 +25,12 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CubeComponent from "./components/CubeComponent.vue";
+import Cube2DComponent from "./components/Cube2DComponent.vue";
 
 @Component({
   components: {
-    CubeComponent
+    CubeComponent,
+    Cube2DComponent
   }
 })
 export default class App extends Vue {

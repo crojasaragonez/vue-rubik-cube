@@ -56,15 +56,10 @@
       />
     </a>
 
-    <!-- horizontal debug -->
-    <h1>{{ cube.sides.front.cells[0][0].color }}</h1>
-    <h1>{{ cube.sides.front.cells[0][1].color }}</h1>
-    <h1>{{ cube.sides.front.cells[0][2].color }}</h1>
-
-    <!-- vertical debug -->
-    <!-- <h1>{{ cube.sides.front.cells[0][0].color }}</h1>
-    <h1>{{ cube.sides.front.cells[1][0].color }}</h1>
-    <h1>{{ cube.sides.front.cells[2][0].color }}</h1> -->
+    <!-- debug front side -->
+    <h1>{{ cube.sides.front.xCells(0).map(c => c.color) }}</h1>
+    <h1>{{ cube.sides.front.xCells(1).map(c => c.color) }}</h1>
+    <h1>{{ cube.sides.front.xCells(2).map(c => c.color) }}</h1>
 
     <div class="cube-container">
       <div

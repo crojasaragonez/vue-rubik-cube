@@ -8,7 +8,7 @@
   align-items: center;
 }
 </style>
-<template>
+<template @keydown="keydown">
   <div
     class="container"
     @mousedown="mousedown"
@@ -26,6 +26,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import CubeComponent from "./components/CubeComponent.vue";
 import Cube2DComponent from "./components/Cube2DComponent.vue";
+import { UserAction } from "@/enums";
 
 @Component({
   components: {
@@ -39,6 +40,16 @@ export default class App extends Vue {
   // eslint-disable-next-line
   last: any;
   mouseDown = false;
+
+  /**
+   *
+   */
+  constructor() {
+    super();
+    window.addEventListener("keydown", event => {
+      this.keydown(event);
+    });
+  }
 
   mousedown(event: MouseEvent) {
     this.mouseDown = true;
@@ -57,6 +68,22 @@ export default class App extends Vue {
     this.rotateX -= event.clientY - this.last.clientY;
     this.rotateY += event.clientX - this.last.clientX;
     this.last = event;
+  }
+
+  keydown(event: KeyboardEvent) {
+    event.preventDefault();
+    if (event.keyCode === UserAction.RightKey) {
+      this.rotateY += 5;
+    }
+    if (event.keyCode === UserAction.LeftKey) {
+      this.rotateY -= 5;
+    }
+    if (event.keyCode === UserAction.DownKey) {
+      this.rotateX += 5;
+    }
+    if (event.keyCode === UserAction.UpKey) {
+      this.rotateX -= 5;
+    }
   }
 }
 </script>

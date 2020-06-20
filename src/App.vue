@@ -47,9 +47,6 @@ export default class App extends Vue {
   mouseDown = false;
   touchStart = false;
 
-  /**
-   *
-   */
   constructor() {
     super();
     window.addEventListener("keydown", event => {
@@ -87,7 +84,7 @@ export default class App extends Vue {
 
   keydown(event: KeyboardEvent) {
     event.preventDefault();
-    const moves: any = {};
+    const moves: { [k: string]: () => {} } = {};
     moves[UserAction.RightKey] = () => (this.rotateY += 5);
     moves[UserAction.LeftKey] = () => (this.rotateY -= 5);
     moves[UserAction.DownKey] = () => (this.rotateX += 5);

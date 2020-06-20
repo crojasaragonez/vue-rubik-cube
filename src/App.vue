@@ -66,30 +66,33 @@ export default class App extends Vue {
     this.mouseDown = false;
   }
 
+  move(x1: number, y1: number, x2: number, y2: number) {
+    this.rotateX -= y1 - y2;
+    this.rotateY += x1 - x2;
+  }
+
   mousemove(event: MouseEvent) {
     event.preventDefault();
     if (!this.mouseDown) {
       return;
     }
-    this.rotateX -= event.clientY - this.last.clientY;
-    this.rotateY += event.clientX - this.last.clientX;
+    this.move(
+      event.clientX,
+      event.clientY,
+      this.last.clientX,
+      this.last.clientY
+    );
     this.last = event;
   }
 
   keydown(event: KeyboardEvent) {
     event.preventDefault();
-    if (event.keyCode === UserAction.RightKey) {
-      this.rotateY += 5;
-    }
-    if (event.keyCode === UserAction.LeftKey) {
-      this.rotateY -= 5;
-    }
-    if (event.keyCode === UserAction.DownKey) {
-      this.rotateX += 5;
-    }
-    if (event.keyCode === UserAction.UpKey) {
-      this.rotateX -= 5;
-    }
+    const moves: any = {};
+    moves[UserAction.RightKey] = () => (this.rotateY += 5);
+    moves[UserAction.LeftKey] = () => (this.rotateY -= 5);
+    moves[UserAction.DownKey] = () => (this.rotateX += 5);
+    moves[UserAction.UpKey] = () => (this.rotateX -= 5);
+    moves[event.keyCode]();
   }
 
   startHandler(event: TouchEvent) {
@@ -103,10 +106,12 @@ export default class App extends Vue {
       return;
     }
     if (event.touches) {
-      this.rotateX -=
-        event.touches[0].clientY - this.lastTouch.touches[0].clientY;
-      this.rotateY +=
-        event.touches[0].clientX - this.lastTouch.touches[0].clientX;
+      this.move(
+        event.touches[0].clientX,
+        event.touches[0].clientY,
+        this.lastTouch.touches[0].clientX,
+        this.lastTouch.touches[0].clientY
+      );
       this.lastTouch = event;
     }
   }

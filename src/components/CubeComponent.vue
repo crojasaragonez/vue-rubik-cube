@@ -56,11 +56,6 @@
       />
     </a>
 
-    <!-- debug front side -->
-    <h1>{{ cube.sides.front.xCells(0).map(c => c.color) }}</h1>
-    <h1>{{ cube.sides.front.xCells(1).map(c => c.color) }}</h1>
-    <h1>{{ cube.sides.front.xCells(2).map(c => c.color) }}</h1>
-
     <div class="cube-container">
       <div
         class="cube"

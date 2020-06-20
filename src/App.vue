@@ -8,12 +8,15 @@
   align-items: center;
 }
 </style>
-<template @keydown="keydown">
+<template>
   <div
     class="container"
     @mousedown="mousedown"
     @mouseup="mouseup"
     @mousemove="mousemove"
+    v-touch:start="startHandler"
+    v-touch:end="endHandler"
+    v-touch:moving="movingHandler"
   >
     <CubeComponent
       :rotateX.sync="rotateX"
@@ -39,7 +42,9 @@ export default class App extends Vue {
   rotateY = 36;
   // eslint-disable-next-line
   last: any;
+  lastTouch: any;
   mouseDown = false;
+  touchStart = false;
 
   /**
    *
@@ -84,6 +89,27 @@ export default class App extends Vue {
     if (event.keyCode === UserAction.UpKey) {
       this.rotateX -= 5;
     }
+  }
+
+  startHandler(event: TouchEvent){
+    this.touchStart = true;
+    this.lastTouch = event;
+  }
+
+  movingHandler(event: TouchEvent){
+    event.preventDefault();
+    if (!this.touchStart) {
+      return;
+    }
+    if (event.touches) {
+      this.rotateX -= event.touches[0].clientY - this.lastTouch.touches[0].clientY;
+      this.rotateY += event.touches[0].clientX - this.lastTouch.touches[0].clientX;
+      this.lastTouch = event;
+    }
+  }
+
+  endHandler(event: TouchEvent){
+    this.touchStart = false;
   }
 }
 </script>

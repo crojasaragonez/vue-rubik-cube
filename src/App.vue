@@ -14,9 +14,9 @@
     @mousedown="mousedown"
     @mouseup="mouseup"
     @mousemove="mousemove"
-    v-touch:start="startHandler"
-    v-touch:end="endHandler"
-    v-touch:moving="movingHandler"
+    v-touch:start="touchStart"
+    v-touch:end="touchEnd"
+    v-touch:moving="touchMoving"
   >
     <CubeComponent
       :rotateX.sync="rotateX"
@@ -45,7 +45,7 @@ export default class App extends Vue {
   // eslint-disable-next-line
   lastTouch: any;
   mouseDown = false;
-  touchStart = false;
+  touchActive = false;
 
   constructor() {
     super();
@@ -92,14 +92,14 @@ export default class App extends Vue {
     moves[event.keyCode]();
   }
 
-  startHandler(event: TouchEvent) {
-    this.touchStart = true;
+  touchStart(event: TouchEvent) {
+    this.touchActive = true;
     this.lastTouch = event;
   }
 
-  movingHandler(event: TouchEvent) {
+  touchMoving(event: TouchEvent) {
     event.preventDefault();
-    if (!this.touchStart) {
+    if (!this.touchActive) {
       return;
     }
     if (event.touches) {
@@ -113,8 +113,8 @@ export default class App extends Vue {
     }
   }
 
-  endHandler() {
-    this.touchStart = false;
+  touchEnd() {
+    this.touchActive = false;
   }
 }
 </script>

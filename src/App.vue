@@ -42,6 +42,7 @@ export default class App extends Vue {
   rotateY = 36;
   // eslint-disable-next-line
   last: any;
+  // eslint-disable-next-line
   lastTouch: any;
   mouseDown = false;
   touchStart = false;
@@ -91,24 +92,26 @@ export default class App extends Vue {
     }
   }
 
-  startHandler(event: TouchEvent){
+  startHandler(event: TouchEvent) {
     this.touchStart = true;
     this.lastTouch = event;
   }
 
-  movingHandler(event: TouchEvent){
+  movingHandler(event: TouchEvent) {
     event.preventDefault();
     if (!this.touchStart) {
       return;
     }
     if (event.touches) {
-      this.rotateX -= event.touches[0].clientY - this.lastTouch.touches[0].clientY;
-      this.rotateY += event.touches[0].clientX - this.lastTouch.touches[0].clientX;
+      this.rotateX -=
+        event.touches[0].clientY - this.lastTouch.touches[0].clientY;
+      this.rotateY +=
+        event.touches[0].clientX - this.lastTouch.touches[0].clientX;
       this.lastTouch = event;
     }
   }
 
-  endHandler(event: TouchEvent){
+  endHandler() {
     this.touchStart = false;
   }
 }

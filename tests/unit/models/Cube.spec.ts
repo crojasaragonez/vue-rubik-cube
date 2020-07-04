@@ -1,10 +1,9 @@
 import { expect } from "chai";
 import { Cube } from "@/models";
-import { Color, SidePosition, Direction } from "@/enums";
-import { sideColors, sidePositions } from "../helper";
+import { Color, SidePosition } from "@/enums";
 
 describe("Cube.ts", () => {
-  let cube = new Cube();
+  const cube = new Cube();
 
   describe("initial position and color for each cube side", () => {
     it("sets the correct color and position to the front side", () => {

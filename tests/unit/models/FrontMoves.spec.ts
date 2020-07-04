@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Cube } from "@/models";
-import { Color, SidePosition, Direction } from "@/enums";
+import { Color, Direction } from "@/enums";
 import { sideColors, sidePositions } from "../helper";
 
 describe("Front Side Moves", () => {

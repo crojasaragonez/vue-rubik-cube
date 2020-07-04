@@ -69,11 +69,15 @@ export class Cube {
       bottom: this.sides.bottom.yCells(cell.y)
     };
     if (cell.y == 0) {
-      const sideToRotate = this.sides[side.next(Direction.Right)]
-      direction == Direction.Up ? sideToRotate.rotateLeft() : sideToRotate.rotateRight();
-    } else if(cell.y == 2) {
-      const sideToRotate = this.sides[side.next(Direction.Left)]
-      direction == Direction.Up ? sideToRotate.rotateRight() : sideToRotate.rotateLeft();
+      const sideToRotate = this.sides[side.next(Direction.Right)];
+      direction == Direction.Up
+        ? sideToRotate.rotateLeft()
+        : sideToRotate.rotateRight();
+    } else if (cell.y == 2) {
+      const sideToRotate = this.sides[side.next(Direction.Left)];
+      direction == Direction.Up
+        ? sideToRotate.rotateRight()
+        : sideToRotate.rotateLeft();
     }
     //rotates the cube in y position 4 times
     Array.from({ length: 4 }, () => {

@@ -43,6 +43,7 @@ export class Navigation {
   }
 
   public next(position: SidePosition, direction: Direction): SidePosition {
+    //TODO: Ajustar esto para retornar diferentes resultados dependiendo de quien pregunte
     return this.navigation[position][direction];
   }
 }

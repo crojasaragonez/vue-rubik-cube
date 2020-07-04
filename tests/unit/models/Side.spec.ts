@@ -31,6 +31,86 @@ describe("Side.ts", () => {
     ]);
   });
 
+  describe("#rotateRight", () => {
+    context("side is rotated once", () => {
+      it("rotates the cells to the right", () => {
+        const side = new Side(Color.Yellow, SidePosition.Front);
+        side.rotateRight();
+        expect(
+          side.cells.map(row => {
+            return row.map(cell => {
+              return `${cell.x}${cell.y}`;
+            });
+          })
+        ).to.eql([
+          ["20", "10", "00"],
+          ["21", "11", "01"],
+          ["22", "12", "02"]
+        ]);
+      });
+    });
+
+    context("side is rotated 4 times", () => {
+      it("leaves the cells in the original position", () => {
+        const side = new Side(Color.Yellow, SidePosition.Front);
+        Array.from({ length: 4 }, () => {
+          side.rotateRight();
+        });
+        expect(
+          side.cells.map(row => {
+            return row.map(cell => {
+              return `${cell.x}${cell.y}`;
+            });
+          })
+        ).to.eql([
+          ["00", "01", "02"],
+          ["10", "11", "12"],
+          ["20", "21", "22"]
+        ]);
+      });
+    });
+  });
+
+  describe("#rotateLeft", () => {
+    context("side is rotated once", () => {
+      it("rotates the cells to the right", () => {
+        const side = new Side(Color.Yellow, SidePosition.Front);
+        side.rotateLeft();
+        expect(
+          side.cells.map(row => {
+            return row.map(cell => {
+              return `${cell.x}${cell.y}`;
+            });
+          })
+        ).to.eql([
+          ["02", "12", "22"],
+          ["01", "11", "21"],
+          ["00", "10", "20"]
+        ]);
+      });
+    });
+
+    context("side is rotated 4 times", () => {
+      it("leaves the cells in the original position", () => {
+        const side = new Side(Color.Yellow, SidePosition.Front);
+        Array.from({ length: 4 }, () => {
+          side.rotateLeft();
+        });
+        expect(
+          side.cells.map(row => {
+            return row.map(cell => {
+              return `${cell.x}${cell.y}`;
+            });
+          })
+        ).to.eql([
+          ["00", "01", "02"],
+          ["10", "11", "12"],
+          ["20", "21", "22"]
+        ]);
+      });
+    });
+  });
+
   describe("#xCells", () => {
     context("when x is between the 0-2 range", () => {
       it("picks the right cells", () => {

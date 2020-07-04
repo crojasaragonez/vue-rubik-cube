@@ -198,12 +198,12 @@ describe("Side.ts", () => {
       });
       context("when Direction is up", () => {
         it("returns the correct next move", () => {
-          expect(side.next(Direction.Up)).to.eql(SidePosition.Top);
+          expect(side.next(Direction.Up)).to.eql(SidePosition.Bottom);
         });
       });
       context("when Direction is down", () => {
         it("returns the correct next move", () => {
-          expect(side.next(Direction.Down)).to.eql(SidePosition.Bottom);
+          expect(side.next(Direction.Down)).to.eql(SidePosition.Top);
         });
       });
     });
@@ -246,12 +246,12 @@ describe("Side.ts", () => {
       });
       context("when Direction is up", () => {
         it("returns the correct next move", () => {
-          expect(side.next(Direction.Up)).to.eql(SidePosition.Top);
+          expect(side.next(Direction.Up)).to.eql(SidePosition.Bottom);
         });
       });
       context("when Direction is down", () => {
         it("returns the correct next move", () => {
-          expect(side.next(Direction.Down)).to.eql(SidePosition.Bottom);
+          expect(side.next(Direction.Down)).to.eql(SidePosition.Top);
         });
       });
     });

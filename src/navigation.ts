@@ -12,8 +12,8 @@ export class Navigation {
     this.navigation[SidePosition.Front][Direction.Left] = SidePosition.Right;
     //Right
     this.navigation[SidePosition.Right] = {};
-    this.navigation[SidePosition.Right][Direction.Up] = SidePosition.Top;
-    this.navigation[SidePosition.Right][Direction.Down] = SidePosition.Bottom;
+    this.navigation[SidePosition.Right][Direction.Up] = SidePosition.Bottom;
+    this.navigation[SidePosition.Right][Direction.Down] = SidePosition.Top;
     this.navigation[SidePosition.Right][Direction.Right] = SidePosition.Front;
     this.navigation[SidePosition.Right][Direction.Left] = SidePosition.Back;
     //Back
@@ -24,8 +24,8 @@ export class Navigation {
     this.navigation[SidePosition.Back][Direction.Left] = SidePosition.Left;
     //Left
     this.navigation[SidePosition.Left] = {};
-    this.navigation[SidePosition.Left][Direction.Up] = SidePosition.Top;
-    this.navigation[SidePosition.Left][Direction.Down] = SidePosition.Bottom;
+    this.navigation[SidePosition.Left][Direction.Up] = SidePosition.Bottom;
+    this.navigation[SidePosition.Left][Direction.Down] = SidePosition.Top;
     this.navigation[SidePosition.Left][Direction.Right] = SidePosition.Back;
     this.navigation[SidePosition.Left][Direction.Left] = SidePosition.Front;
     //Top

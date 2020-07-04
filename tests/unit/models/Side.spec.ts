@@ -260,12 +260,12 @@ describe("Side.ts", () => {
       const side = new Side(Color.Red, SidePosition.Top);
       context("when Direction is right", () => {
         it("returns the correct next move", () => {
-          expect(side.next(Direction.Right)).to.eql(SidePosition.Right);
+          expect(side.next(Direction.Right)).to.eql(SidePosition.Left);
         });
       });
       context("when Direction is left", () => {
         it("returns the correct next move", () => {
-          expect(side.next(Direction.Left)).to.eql(SidePosition.Left);
+          expect(side.next(Direction.Left)).to.eql(SidePosition.Right);
         });
       });
       context("when Direction is up", () => {

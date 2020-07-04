@@ -54,6 +54,7 @@ export class Cube {
     //rotates the cube in x position 4 times
     Array.from({ length: 4 }, () => {
       const nextSide = side.next(direction);
+      console.log(nextSide);
       side.cells[cell.x] = original[nextSide];
       side = this.sides[nextSide];
     });
@@ -82,6 +83,7 @@ export class Cube {
     //rotates the cube in y position 4 times
     Array.from({ length: 4 }, () => {
       const nextSide = side.next(direction);
+      console.log(nextSide);
       [0, 1, 2].forEach(i => (side.cells[i][cell.y] = original[nextSide][i]));
       side = this.sides[nextSide];
     });

@@ -32,8 +32,8 @@ export class Navigation {
     this.navigation[SidePosition.Top] = {};
     this.navigation[SidePosition.Top][Direction.Up] = SidePosition.Front;
     this.navigation[SidePosition.Top][Direction.Down] = SidePosition.Back;
-    this.navigation[SidePosition.Top][Direction.Right] = SidePosition.Right;
-    this.navigation[SidePosition.Top][Direction.Left] = SidePosition.Left;
+    this.navigation[SidePosition.Top][Direction.Right] = SidePosition.Left;
+    this.navigation[SidePosition.Top][Direction.Left] = SidePosition.Right;
     //Bottom
     this.navigation[SidePosition.Bottom] = {};
     this.navigation[SidePosition.Bottom][Direction.Up] = SidePosition.Back;
@@ -43,6 +43,7 @@ export class Navigation {
   }
 
   public next(position: SidePosition, direction: Direction): SidePosition {
+    //TODO: Ajustar esto para retornar diferentes resultados dependiendo de quien pregunte
     return this.navigation[position][direction];
   }
 }

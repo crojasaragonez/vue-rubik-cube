@@ -8,18 +8,16 @@
 }
 </style>
 <template>
-  <div>
-    <div class="side">
-      <template v-for="row in side.cells">
-        <CellComponent
-          v-for="cell in row"
-          :key="cell.key"
-          :cell.sync="cell"
-          :class="side.position"
-          @move="move"
-        ></CellComponent>
-      </template>
-    </div>
+  <div class="side">
+    <template v-for="row in side.cells">
+      <CellComponent
+        v-for="cell in row"
+        :key="cell.key"
+        :cell.sync="cell"
+        :class="side.position"
+        @move="move"
+      ></CellComponent>
+    </template>
   </div>
 </template>
 <script lang="ts">

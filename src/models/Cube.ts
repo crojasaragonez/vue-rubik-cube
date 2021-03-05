@@ -31,6 +31,15 @@ export class Cube {
       : this.verticalMove(side, cell, direction);
   }
 
+  private updateColors() {
+    this.sides.front.cells = [...this.sides.front.cells];
+    this.sides.top.cells = [...this.sides.top.cells];
+    this.sides.left.cells = [...this.sides.left.cells];
+    this.sides.right.cells = [...this.sides.right.cells];
+    this.sides.back.cells = [...this.sides.back.cells];
+    this.sides.bottom.cells = [...this.sides.bottom.cells];
+  }
+
   private horizontalMove(side: Side, cell: Cell, direction: Direction) {
     const original: CubeCells = {
       front: this.sides.front.xCells(cell.x),
@@ -55,6 +64,7 @@ export class Cube {
       side.cells[cell.x] = original[nextSide];
       side = this.sides[nextSide];
     });
+    this.updateColors();
   }
 
   private verticalMove(side: Side, cell: Cell, direction: Direction) {
@@ -83,5 +93,6 @@ export class Cube {
       [0, 1, 2].forEach(i => (side.cells[i][cell.y] = original[nextSide][i]));
       side = this.sides[nextSide];
     });
+    this.updateColors();
   }
 }

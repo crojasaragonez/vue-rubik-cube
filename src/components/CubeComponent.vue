@@ -13,7 +13,7 @@
 .side {
   position: absolute;
   box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.1), 0 0 50px rgba(0, 0, 0, 0.3);
-  opacity: 0.8;
+  opacity: 1;
   width: 100%;
   height: 100%;
 }
@@ -102,7 +102,6 @@ export default class CubeComponent extends Vue {
       direction: direction,
       side: side
     });
-    this.$forceUpdate();
   }
 }
 </script>

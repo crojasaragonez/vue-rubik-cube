@@ -47,34 +47,19 @@
 }
 </style>
 <template>
-  <div>
-    <a href="https://github.com/crojasaragonez/vue-rubik-cube">
-      <img
-        style="position: absolute; top: 0; left: 0; border: 0;"
-        src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"
-        alt="Fork me on GitHub"
-      />
-    </a>
-
-    <!-- debug front side -->
-    <!-- <h1>{{ cube.sides.front.xCells(0).map(c => c.color) }}</h1>
-    <h1>{{ cube.sides.front.xCells(1).map(c => c.color) }}</h1>
-    <h1>{{ cube.sides.front.xCells(2).map(c => c.color) }}</h1> -->
-
-    <div class="cube-container">
-      <div
-        class="cube"
-        :style="{ transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)` }"
-      >
-        <SideComponent
-          v-for="side in cube.allSides"
-          :key="side.position"
-          class="side"
-          :side.sync="side"
-          :class="side.position"
-          @move="move"
-        ></SideComponent>
-      </div>
+  <div class="cube-container">
+    <div
+      class="cube"
+      :style="{ transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)` }"
+    >
+      <SideComponent
+        v-for="side in cube.allSides"
+        :key="side.position"
+        class="side"
+        :side.sync="side"
+        :class="side.position"
+        @move="move"
+      ></SideComponent>
     </div>
   </div>
 </template>

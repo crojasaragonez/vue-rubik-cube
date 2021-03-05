@@ -1,0 +1,11 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+}
+:root {
+  --cube-size: 30vh;
+  --side-size: calc(var(--cube-size) / 2);
+  --side-size-opposite: calc((var(--cube-size) / 2) * -1);
+}

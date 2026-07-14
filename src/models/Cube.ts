@@ -1,5 +1,6 @@
 import { SidePosition, Color, Direction } from "@/enums";
-import { Side, Cell, CubeCells, CubeSides } from "@/models";
+import { Side, Cell } from "@/models";
+import type { CubeCells, CubeSides } from "@/models";
 
 export class Cube {
   sides: CubeSides;

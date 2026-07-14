@@ -1,6 +1,12 @@
-html, body {
+html,
+body,
+#app {
   width: 100%;
   height: 100%;
+  margin: 0;
+}
+
+body {
   overflow: hidden;
   background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
 }

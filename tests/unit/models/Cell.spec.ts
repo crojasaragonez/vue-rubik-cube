@@ -1,18 +1,18 @@
-import { expect } from "chai";
+import { describe, it, expect } from "vitest";
 import { Cell } from "@/models";
 import { Color } from "@/enums";
 
 describe("Cell.ts", () => {
   const cell = new Cell(Color.Red, 0, 0);
   it("builds a valid instance", () => {
-    expect(cell.color).to.eq(Color.Red);
-    expect(cell.x).to.eq(0);
-    expect(cell.y).to.eq(0);
+    expect(cell.color).toBe(Color.Red);
+    expect(cell.x).toBe(0);
+    expect(cell.y).toBe(0);
   });
 
   describe("#key", () => {
     it("returns an empty array", () => {
-      expect(cell.key).to.eql("red-0-0");
+      expect(cell.key).toEqual("red-0-0");
     });
   });
 });

@@ -1,18 +1,14 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import { Cube } from "@/models";
+import { defineStore } from "pinia";
+import { reactive } from "vue";
+import { Cube, Cell, Side } from "@/models";
+import { Direction } from "@/enums";
 
-Vue.use(Vuex);
+export const useCubeStore = defineStore("cube", () => {
+  const cube = reactive(new Cube()) as Cube;
 
-export default new Vuex.Store({
-  state: {
-    cube: new Cube()
-  },
-  mutations: {
-    move(state, payload) {
-      state.cube.move(payload.side, payload.cell, payload.direction);
-    }
-  },
-  actions: {},
-  modules: {}
+  function move(side: Side, cell: Cell, direction: Direction) {
+    cube.move(side, cell, direction);
+  }
+
+  return { cube, move };
 });

@@ -1,3 +1,89 @@
+<template>
+  <div class="cube">
+    <table>
+      <tbody>
+        <tr>
+          <td></td>
+          <td>
+            <SideComponent
+              :key="cube.sides.top.position"
+              :side="cube.sides.top"
+              :class="cube.sides.top.position"
+              @move="onMove"
+            />
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <SideComponent
+              :key="cube.sides.left.position"
+              :side="cube.sides.left"
+              :class="cube.sides.left.position"
+              @move="onMove"
+            />
+          </td>
+          <td>
+            <SideComponent
+              :key="cube.sides.front.position"
+              :side="cube.sides.front"
+              :class="cube.sides.front.position"
+              @move="onMove"
+            />
+          </td>
+          <td>
+            <SideComponent
+              :key="cube.sides.right.position"
+              :side="cube.sides.right"
+              :class="cube.sides.right.position"
+              @move="onMove"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <SideComponent
+              :key="cube.sides.bottom.position"
+              :side="cube.sides.bottom"
+              :class="cube.sides.bottom.position"
+              @move="onMove"
+            />
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <SideComponent
+              :key="cube.sides.back.position"
+              :side="cube.sides.back"
+              :class="cube.sides.back.position"
+              @move="onMove"
+            />
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from "vue";
+import SideComponent from "./SideComponent.vue";
+import { Cell, Side } from "@/models";
+import { Direction } from "@/enums";
+import { useCubeStore } from "@/store";
+
+const store = useCubeStore();
+const cube = computed(() => store.cube);
+
+function onMove(cell: Cell, direction: Direction, side: Side) {
+  store.move(side, cell, direction);
+}
+</script>
+
 <style scoped lang="css">
 .top,
 .left,
@@ -9,95 +95,3 @@
   height: 10vw;
 }
 </style>
-<template>
-  <div class="cube">
-    <table>
-      <tr>
-        <td></td>
-        <td>
-          <SideComponent
-            :key="cube.sides.top.position"
-            :side.sync="cube.sides.top"
-            :class="cube.sides.top.position"
-            @move="move"
-          ></SideComponent>
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <SideComponent
-            :key="cube.sides.left.position"
-            :side.sync="cube.sides.left"
-            :class="cube.sides.left.position"
-            @move="move"
-          ></SideComponent>
-        </td>
-        <td>
-          <SideComponent
-            :key="cube.sides.front.position"
-            :side.sync="cube.sides.front"
-            :class="cube.sides.front.position"
-            @move="move"
-          ></SideComponent>
-        </td>
-        <td>
-          <SideComponent
-            :key="cube.sides.right.position"
-            :side.sync="cube.sides.right"
-            :class="cube.sides.right.position"
-            @move="move"
-          ></SideComponent>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <SideComponent
-            :key="cube.sides.bottom.position"
-            :side.sync="cube.sides.bottom"
-            :class="cube.sides.bottom.position"
-            @move="move"
-          ></SideComponent>
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <SideComponent
-            :key="cube.sides.back.position"
-            :side.sync="cube.sides.back"
-            :class="cube.sides.back.position"
-            @move="move"
-          ></SideComponent>
-        </td>
-        <td></td>
-      </tr>
-    </table>
-  </div>
-</template>
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import SideComponent from "./SideComponent.vue";
-import { Cube, Cell, Side } from "@/models";
-import { Direction } from "@/enums";
-@Component({
-  components: {
-    SideComponent
-  }
-})
-export default class Cube2DComponent extends Vue {
-  public get cube(): Cube {
-    return this.$store.state.cube;
-  }
-
-  move(cell: Cell, direction: Direction, side: Side) {
-    this.$store.commit("move", {
-      cell: cell,
-      direction: direction,
-      side: side
-    });
-  }
-}
-</script>

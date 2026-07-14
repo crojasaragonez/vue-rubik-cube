@@ -7,7 +7,6 @@
         :cell="cell"
         :row="row"
         :col="col"
-        :class="side.position"
         @move="onMove"
       />
     </template>

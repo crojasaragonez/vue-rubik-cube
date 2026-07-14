@@ -8,13 +8,6 @@
     @touchend="touchEnd"
     @touchmove="touchMoving"
   >
-    <a href="https://github.com/crojasaragonez/vue-rubik-cube">
-      <img
-        style="position: absolute; top: 0; left: 0; border: 0"
-        src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"
-        alt="Fork me on GitHub"
-      />
-    </a>
     <Cube2DComponent v-if="mode == '2D'" />
     <CubeComponent
       v-if="mode == '3D'"
@@ -137,6 +130,7 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
 }
+
 .bottom-controls {
   position: absolute;
   top: 0px;

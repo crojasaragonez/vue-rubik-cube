@@ -10,7 +10,10 @@
     "preview": "vite preview",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx --fix"
+    "lint": "eslint . --fix"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "pinia": "^3.0.3",

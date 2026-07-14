@@ -31,7 +31,7 @@
       >
         <polyline points="15 18 9 12 15 6"></polyline>
       </svg>
-      {{ cell.x }},{{ cell.y }}
+      {{ row }},{{ col }}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -72,14 +72,16 @@ import { Cell } from "@/models";
 
 const props = defineProps<{
   cell: Cell;
+  row: number;
+  col: number;
 }>();
 
 const emit = defineEmits<{
-  move: [cell: Cell, direction: Direction];
+  move: [row: number, col: number, direction: Direction];
 }>();
 
 function move(direction: Direction) {
-  emit("move", props.cell, direction);
+  emit("move", props.row, props.col, direction);
 }
 </script>
 

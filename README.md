@@ -1,33 +1,48 @@
 # vue-rubik-cube
 
-Vue 3 + Vite Rubik's cube playground.
+Vue 3 + Vite + Pinia Rubik's cube playground.
 
-## Project setup
+## Stack
+
+- Vue 3 (`<script setup>`) + TypeScript
+- Vite for dev/build
+- Pinia for cube state
+- Vitest + Vue Test Utils for unit tests
+
+## Setup
 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Dev server
 
 ```
 npm run dev
 ```
 
-### Compiles and minifies for production
+### Production build
 
 ```
 npm run build
 ```
 
-### Run unit tests
+### Unit tests
 
 ```
 npm run test:unit
 ```
 
-### Lints and fixes files
+### Lint
 
 ```
 npm run lint
 ```
+
+### GitHub Pages deploy
+
+```
+./deploy.sh
+```
+
+Production assets use base path `/vue-rubik-cube/`.

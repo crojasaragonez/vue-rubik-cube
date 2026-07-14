@@ -1,11 +1,12 @@
 <template>
   <div class="side">
-    <template v-for="(row, rowIndex) in side.cells" :key="rowIndex">
+    <template v-for="(rowCells, row) in side.cells" :key="row">
       <CellComponent
-        v-for="cell in row"
-        :key="cell.key"
+        v-for="(cell, col) in rowCells"
+        :key="`${side.position}-${row}-${col}`"
         :cell="cell"
-        :class="side.position"
+        :row="row"
+        :col="col"
         @move="onMove"
       />
     </template>
@@ -14,7 +15,7 @@
 
 <script setup lang="ts">
 import CellComponent from "./CellComponent.vue";
-import { Side, Cell } from "@/models";
+import { Side } from "@/models";
 import { Direction } from "@/enums";
 
 const props = defineProps<{
@@ -22,11 +23,11 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  move: [cell: Cell, direction: Direction, side: Side];
+  move: [row: number, col: number, direction: Direction, side: Side];
 }>();
 
-function onMove(cell: Cell, direction: Direction) {
-  emit("move", cell, direction, props.side);
+function onMove(row: number, col: number, direction: Direction) {
+  emit("move", row, col, direction, props.side);
 }
 </script>
 

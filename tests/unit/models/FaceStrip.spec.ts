@@ -25,10 +25,10 @@ function columnColors(
 describe("Face strip remaps", () => {
   it("Front Up remaps Top/Back/Bottom with correct reverses", () => {
     const cube = new Cube();
-    // Isolate the strip stickers from the solved solids
+    // Left layer: Front/Top/Bottom col 0 pair with Back col 2
     paintColumn(cube, "front", 0, [Color.Red, Color.Orange, Color.Yellow]);
     paintColumn(cube, "top", 0, [Color.Green, Color.Blue, Color.White]);
-    paintColumn(cube, "back", 0, [Color.Yellow, Color.Green, Color.Blue]);
+    paintColumn(cube, "back", 2, [Color.Yellow, Color.Green, Color.Blue]);
     paintColumn(cube, "bottom", 0, [Color.White, Color.Red, Color.Orange]);
 
     cube.move(cube.sides.front, 0, 0, Direction.Up);
@@ -44,7 +44,7 @@ describe("Face strip remaps", () => {
       Color.Orange,
       Color.Red
     ]);
-    expect(columnColors(cube, "back", 0)).toEqual([
+    expect(columnColors(cube, "back", 2)).toEqual([
       Color.White,
       Color.Blue,
       Color.Green
@@ -79,11 +79,33 @@ describe("Face strip remaps", () => {
     expect(columnColors(cube, "bottom", 1)).toEqual(before.d);
   });
 
+  it("Back face (0,0) Up turns the right-hand slice (outside view)", () => {
+    const cube = new Cube();
+    paintColumn(cube, "front", 2, [Color.Red, Color.Orange, Color.Yellow]);
+    paintColumn(cube, "top", 2, [Color.Green, Color.Blue, Color.White]);
+    // Back col0 is the physical right edge
+    paintColumn(cube, "back", 0, [Color.Yellow, Color.Green, Color.Blue]);
+    paintColumn(cube, "bottom", 2, [Color.White, Color.Red, Color.Orange]);
+    paintColumn(cube, "front", 0, [Color.Blue, Color.Blue, Color.Blue]);
+
+    const leftFrontBefore = columnColors(cube, "front", 0);
+    cube.move(cube.sides.back, 0, 0, Direction.Up);
+
+    // Right slice moves; left does not
+    expect(columnColors(cube, "front", 0)).toEqual(leftFrontBefore);
+    // Front Down on col 2: U' = rev(B) with B from back col 0
+    expect(columnColors(cube, "top", 2)).toEqual([
+      Color.Blue,
+      Color.Green,
+      Color.Yellow
+    ]);
+  });
+
   it("Top face Up moves stickers toward Back (same sense as Front Up)", () => {
     const cube = new Cube();
     paintColumn(cube, "front", 0, [Color.Red, Color.Orange, Color.Yellow]);
     paintColumn(cube, "top", 0, [Color.Green, Color.Blue, Color.White]);
-    paintColumn(cube, "back", 0, [Color.Yellow, Color.Green, Color.Blue]);
+    paintColumn(cube, "back", 2, [Color.Yellow, Color.Green, Color.Blue]);
     paintColumn(cube, "bottom", 0, [Color.White, Color.Red, Color.Orange]);
 
     // Cell (2,0) Up on Top must match Front Up, not Front Down
@@ -96,7 +118,7 @@ describe("Face strip remaps", () => {
     ]);
   });
 
-  it("Front Right cycles F/R/B/L rows without reversing (through-back storage)", () => {
+  it("Front Right cycles F/R/B/L rows with Back L/R reversed", () => {
     const cube = new Cube();
     const mark = (face: keyof Cube["sides"], row: number, colors: Color[]) => {
       colors.forEach((color, col) => {
@@ -113,10 +135,10 @@ describe("Face strip remaps", () => {
 
     cube.move(cube.sides.front, 0, 0, Direction.Right);
 
-    // F' = L, L' = B, B' = R, R' = F
+    // F' = L, L' = rev(B), B' = rev(R), R' = F
     expect(rowOf("front", 0)).toEqual([Color.White, Color.Red, Color.Orange]);
-    expect(rowOf("left", 0)).toEqual([Color.Yellow, Color.Green, Color.Blue]);
-    expect(rowOf("back", 0)).toEqual([Color.Green, Color.Blue, Color.White]);
+    expect(rowOf("left", 0)).toEqual([Color.Blue, Color.Green, Color.Yellow]);
+    expect(rowOf("back", 0)).toEqual([Color.White, Color.Blue, Color.Green]);
     expect(rowOf("right", 0)).toEqual([Color.Red, Color.Orange, Color.Yellow]);
   });
 });

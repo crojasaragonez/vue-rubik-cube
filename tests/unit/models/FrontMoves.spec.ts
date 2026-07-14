@@ -375,9 +375,9 @@ describe("Front Side Moves", () => {
             describe("back side", () => {
               it("contains the correct cell colors", () => {
                 expect(sideColors(cube.sides.back)).toEqual([
-                  [Color.Red, Color.White, Color.White],
-                  [Color.Red, Color.White, Color.White],
-                  [Color.Red, Color.White, Color.White]
+                  [Color.White, Color.White, Color.Red],
+                  [Color.White, Color.White, Color.Red],
+                  [Color.White, Color.White, Color.Red]
                 ]);
               });
             });
@@ -428,9 +428,9 @@ describe("Front Side Moves", () => {
             describe("back side", () => {
               it("contains the correct cell colors", () => {
                 expect(sideColors(cube.sides.back)).toEqual([
-                  [Color.Orange, Color.White, Color.White],
-                  [Color.Orange, Color.White, Color.White],
-                  [Color.Orange, Color.White, Color.White]
+                  [Color.White, Color.White, Color.Orange],
+                  [Color.White, Color.White, Color.Orange],
+                  [Color.White, Color.White, Color.Orange]
                 ]);
               });
             });
@@ -577,9 +577,9 @@ describe("Front Side Moves", () => {
             describe("back side", () => {
               it("contains the correct cell colors", () => {
                 expect(sideColors(cube.sides.back)).toEqual([
-                  [Color.White, Color.White, Color.Red],
-                  [Color.White, Color.White, Color.Red],
-                  [Color.White, Color.White, Color.Red]
+                  [Color.Red, Color.White, Color.White],
+                  [Color.Red, Color.White, Color.White],
+                  [Color.Red, Color.White, Color.White]
                 ]);
               });
             });
@@ -630,9 +630,9 @@ describe("Front Side Moves", () => {
             describe("back side", () => {
               it("contains the correct cell colors", () => {
                 expect(sideColors(cube.sides.back)).toEqual([
-                  [Color.White, Color.White, Color.Orange],
-                  [Color.White, Color.White, Color.Orange],
-                  [Color.White, Color.White, Color.Orange]
+                  [Color.Orange, Color.White, Color.White],
+                  [Color.Orange, Color.White, Color.White],
+                  [Color.Orange, Color.White, Color.White]
                 ]);
               });
             });

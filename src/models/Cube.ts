@@ -8,8 +8,8 @@ type Axis = "x" | "y" | "z";
  * Facelet coordinates (as drawn on each face DOM, row0 at top / col0 at left):
  *
  * - Front:  up=Top, down=Bottom, left=Left, right=Right
- * - Back:   stored "through-cube" (same L/R as Front when looking from the front);
- *           CSS rotateY(180) shows the outside view
+ * - Back:   outside view after CSS rotateY(180): up=Top, left=Right, right=Left
+ *           (DOM col0 sits on the physical Right edge of the cube)
  * - Left:   up=Top, down=Bottom, left=Back, right=Front
  * - Right:  up=Top, down=Bottom, left=Front, right=Back
  * - Top:    up=Back, down=Front, left=Left, right=Right
@@ -73,17 +73,18 @@ export class Cube {
               clockwise: direction === Direction.Down
             };
       case SidePosition.Back:
-        // Through-storage: Back L/R matches Front; swipe directions
-        // appear mirrored when viewed from behind after CSS rotateY(180).
+        // Outside view: col0 = Right. Vertical click on (*, col) turns X-layer (2-col).
         return horizontal
           ? {
               axis: "y",
               layer: row,
+              // Mirrored L/R relative to Front
               clockwise: direction === Direction.Left
             }
           : {
               axis: "x",
-              layer: col,
+              layer: 2 - col,
+              // Up toward Top = Back → Top = Front Down = clockwise
               clockwise: direction === Direction.Up
             };
       case SidePosition.Left:
@@ -206,22 +207,25 @@ export class Cube {
    */
   private turnX(layer: number, clockwise: boolean) {
     const { front, top, back, bottom } = this.sides;
+    // Back col0 is on the physical Right edge (outside view), so Left layer
+    // pairs with Back column 2 and Right layer with Back column 0.
+    const backCol = 2 - layer;
     const f = this.colorsOfColumn(front, layer);
     const u = this.colorsOfColumn(top, layer);
-    const b = this.colorsOfColumn(back, layer);
+    const b = this.colorsOfColumn(back, backCol);
     const d = this.colorsOfColumn(bottom, layer);
 
     if (clockwise) {
-      // Front Down: inverse of Front Up
+      // Front Down
       this.setColumnColors(front, layer, this.reverse(u));
       this.setColumnColors(top, layer, this.reverse(b));
-      this.setColumnColors(back, layer, this.reverse(d));
+      this.setColumnColors(back, backCol, this.reverse(d));
       this.setColumnColors(bottom, layer, this.reverse(f));
     } else {
       // Front Up
       this.setColumnColors(front, layer, this.reverse(d));
       this.setColumnColors(top, layer, this.reverse(f));
-      this.setColumnColors(back, layer, this.reverse(u));
+      this.setColumnColors(back, backCol, this.reverse(u));
       this.setColumnColors(bottom, layer, this.reverse(b));
     }
   }
@@ -230,7 +234,7 @@ export class Cube {
    * Rotate around the top-bottom axis.
    * layer 0 = Top, layer 2 = Bottom.
    * clockwise (Front Right / U'): Front → Right → Back → Left.
-   * Back shares L/R with Front (through-storage); no row reverse needed.
+   * Back rows are L/R reversed relative to Front (outside view).
    */
   private turnY(layer: number, clockwise: boolean) {
     const { front, right, back, left } = this.sides;
@@ -241,13 +245,13 @@ export class Cube {
 
     if (clockwise) {
       this.setRowColors(front, layer, l);
-      this.setRowColors(left, layer, b);
-      this.setRowColors(back, layer, r);
+      this.setRowColors(left, layer, this.reverse(b));
+      this.setRowColors(back, layer, this.reverse(r));
       this.setRowColors(right, layer, f);
     } else {
       this.setRowColors(front, layer, r);
-      this.setRowColors(right, layer, b);
-      this.setRowColors(back, layer, l);
+      this.setRowColors(right, layer, this.reverse(b));
+      this.setRowColors(back, layer, this.reverse(l));
       this.setRowColors(left, layer, f);
     }
   }

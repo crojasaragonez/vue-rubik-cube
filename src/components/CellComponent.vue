@@ -1,4 +1,88 @@
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<template>
+  <div class="cell" :class="cell.color">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="feather feather-chevron-up top-center arrow-control"
+      @click="move(Direction.Up)"
+    >
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+    <div class="middle-between">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-chevron-left arrow-control"
+        @click="move(Direction.Left)"
+      >
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      {{ cell.x }},{{ cell.y }}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-chevron-right arrow-control"
+        @click="move(Direction.Right)"
+      >
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="feather feather-chevron-down bottom-center arrow-control"
+      @click="move(Direction.Down)"
+    >
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { Direction } from "@/enums";
+import { Cell } from "@/models";
+
+const props = defineProps<{
+  cell: Cell;
+}>();
+
+const emit = defineEmits<{
+  move: [cell: Cell, direction: Direction];
+}>();
+
+function move(direction: Direction) {
+  emit("move", props.cell, direction);
+}
+</script>
+
 <style scoped lang="scss">
 .red {
   background-color: #b71234;
@@ -63,95 +147,3 @@
   height: 33.33%;
 }
 </style>
-<template>
-  <div class="cell" :class="cell.color">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="3"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="feather feather-chevron-up top-center arrow-control"
-      @click="move(up)"
-    >
-      <polyline points="18 15 12 9 6 15"></polyline>
-    </svg>
-    <div class="middle-between">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="feather feather-chevron-left arrow-control"
-        @click="move(left)"
-      >
-        <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
-      {{ cell.x }},{{ cell.y }}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="feather feather-chevron-right arrow-control"
-        @click="move(right)"
-      >
-        <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
-    </div>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="3"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="feather feather-chevron-down bottom-center arrow-control"
-      @click="move(down)"
-    >
-      <polyline points="6 9 12 15 18 9"></polyline>
-    </svg>
-  </div>
-</template>
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { Direction } from "@/enums";
-import { Cell } from "@/models";
-
-@Component
-export default class CellComponent extends Vue {
-  @Prop() public cell!: Cell;
-  get up() {
-    return Direction.Up;
-  }
-  get down() {
-    return Direction.Down;
-  }
-  get left() {
-    return Direction.Left;
-  }
-  get right() {
-    return Direction.Right;
-  }
-  move(direction: Direction) {
-    this.$emit("move", this.cell, direction);
-  }
-}
-</script>

@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { describe, it, expect } from "vitest";
 import { Cube } from "@/models";
 import { Color, SidePosition } from "@/enums";
 
@@ -7,39 +7,39 @@ describe("Cube.ts", () => {
 
   describe("initial position and color for each cube side", () => {
     it("sets the correct color and position to the front side", () => {
-      expect(cube.sides.front.color).to.eq(Color.Yellow);
-      expect(cube.sides.front.position).to.eq(SidePosition.Front);
+      expect(cube.sides.front.color).toBe(Color.Yellow);
+      expect(cube.sides.front.position).toBe(SidePosition.Front);
     });
 
     it("sets the correct color and position to the top side", () => {
-      expect(cube.sides.top.color).to.eq(Color.Red);
-      expect(cube.sides.top.position).to.eq(SidePosition.Top);
+      expect(cube.sides.top.color).toBe(Color.Red);
+      expect(cube.sides.top.position).toBe(SidePosition.Top);
     });
 
     it("sets the correct color and position to the bottom side", () => {
-      expect(cube.sides.bottom.color).to.eq(Color.Orange);
-      expect(cube.sides.bottom.position).to.eq(SidePosition.Bottom);
+      expect(cube.sides.bottom.color).toBe(Color.Orange);
+      expect(cube.sides.bottom.position).toBe(SidePosition.Bottom);
     });
 
     it("sets the correct color and position to the left side", () => {
-      expect(cube.sides.left.color).to.eq(Color.Green);
-      expect(cube.sides.left.position).to.eq(SidePosition.Left);
+      expect(cube.sides.left.color).toBe(Color.Green);
+      expect(cube.sides.left.position).toBe(SidePosition.Left);
     });
 
     it("sets the correct color and position to the right side", () => {
-      expect(cube.sides.right.color).to.eq(Color.Blue);
-      expect(cube.sides.right.position).to.eq(SidePosition.Right);
+      expect(cube.sides.right.color).toBe(Color.Blue);
+      expect(cube.sides.right.position).toBe(SidePosition.Right);
     });
 
     it("sets the correct color and position to the back side", () => {
-      expect(cube.sides.back.color).to.eq(Color.White);
-      expect(cube.sides.back.position).to.eq(SidePosition.Back);
+      expect(cube.sides.back.color).toBe(Color.White);
+      expect(cube.sides.back.position).toBe(SidePosition.Back);
     });
   });
 
   describe("#allSides", () => {
     it("returns the sides in the right order", () => {
-      expect(cube.allSides.map(side => side.position)).to.eql([
+      expect(cube.allSides.map(side => side.position)).toEqual([
         SidePosition.Front,
         SidePosition.Top,
         SidePosition.Bottom,

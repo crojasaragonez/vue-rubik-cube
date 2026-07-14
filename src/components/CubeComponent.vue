@@ -1,4 +1,41 @@
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<template>
+  <div class="cube-container">
+    <div
+      class="cube"
+      :style="{ transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)` }"
+    >
+      <SideComponent
+        v-for="side in cube.allSides"
+        :key="side.position"
+        class="side"
+        :side="side"
+        :class="side.position"
+        @move="onMove"
+      />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from "vue";
+import SideComponent from "./SideComponent.vue";
+import { Cell, Side } from "@/models";
+import { Direction } from "@/enums";
+import { useCubeStore } from "@/store";
+
+defineProps<{
+  rotateX: number;
+  rotateY: number;
+}>();
+
+const store = useCubeStore();
+const cube = computed(() => store.cube);
+
+function onMove(cell: Cell, direction: Direction, side: Side) {
+  store.move(side, cell, direction);
+}
+</script>
+
 <style scoped lang="css">
 .cube-container {
   perspective: 1000px;
@@ -46,47 +83,3 @@
   transform: rotateX(180deg) translate3d(0, 0, var(--side-size));
 }
 </style>
-<template>
-  <div class="cube-container">
-    <div
-      class="cube"
-      :style="{ transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)` }"
-    >
-      <SideComponent
-        v-for="side in cube.allSides"
-        :key="side.position"
-        class="side"
-        :side.sync="side"
-        :class="side.position"
-        @move="move"
-      ></SideComponent>
-    </div>
-  </div>
-</template>
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import SideComponent from "./SideComponent.vue";
-import { Cube, Cell, Side } from "@/models";
-import { Direction } from "@/enums";
-
-@Component({
-  components: {
-    SideComponent
-  }
-})
-export default class CubeComponent extends Vue {
-  @Prop() private rotateX!: number;
-  @Prop() private rotateY!: number;
-  public get cube(): Cube {
-    return this.$store.state.cube;
-  }
-
-  move(cell: Cell, direction: Direction, side: Side) {
-    this.$store.commit("move", {
-      cell: cell,
-      direction: direction,
-      side: side
-    });
-  }
-}
-</script>

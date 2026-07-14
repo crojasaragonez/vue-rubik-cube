@@ -1,38 +1,38 @@
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<template>
+  <div class="side">
+    <template v-for="(row, rowIndex) in side.cells" :key="rowIndex">
+      <CellComponent
+        v-for="cell in row"
+        :key="cell.key"
+        :cell="cell"
+        :class="side.position"
+        @move="onMove"
+      />
+    </template>
+  </div>
+</template>
+
+<script setup lang="ts">
+import CellComponent from "./CellComponent.vue";
+import { Side, Cell } from "@/models";
+import { Direction } from "@/enums";
+
+const props = defineProps<{
+  side: Side;
+}>();
+
+const emit = defineEmits<{
+  move: [cell: Cell, direction: Direction, side: Side];
+}>();
+
+function onMove(cell: Cell, direction: Direction) {
+  emit("move", cell, direction, props.side);
+}
+</script>
+
 <style scoped lang="scss">
 .side {
   display: flex;
   flex-wrap: wrap;
 }
 </style>
-<template>
-  <div class="side">
-    <template v-for="row in side.cells">
-      <CellComponent
-        v-for="cell in row"
-        :key="cell.key"
-        :cell.sync="cell"
-        :class="side.position"
-        @move="move"
-      ></CellComponent>
-    </template>
-  </div>
-</template>
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import CellComponent from "./CellComponent.vue";
-import { Side, Cell } from "@/models";
-import { Direction } from "@/enums";
-
-@Component({
-  components: {
-    CellComponent
-  }
-})
-export default class SideComponent extends Vue {
-  @Prop() private side!: Side;
-  move(cell: Cell, direction: Direction) {
-    this.$emit("move", cell, direction, this.side);
-  }
-}
-</script>

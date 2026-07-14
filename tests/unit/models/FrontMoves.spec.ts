@@ -1,7 +1,14 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { Cube } from "@/models";
 import { Color, Direction } from "@/enums";
-import { sideColors, sidePositions } from "../helper";
+import {
+  sideColors,
+  sidePositions,
+  paintSide,
+  TRACKING_PATTERN,
+  rotatePatternLeft,
+  rotatePatternRight
+} from "../helper";
 
 describe("Front Side Moves", () => {
   let cube = new Cube();
@@ -31,11 +38,8 @@ describe("Front Side Moves", () => {
           describe("move right", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[0][0],
-                Direction.Right
-              );
+              paintSide(cube.sides.top, TRACKING_PATTERN);
+              cube.move(cube.sides.front, 0, 0, Direction.Right);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -79,11 +83,7 @@ describe("Front Side Moves", () => {
 
             describe("top side", () => {
               it("rotates the cells to the left", () => {
-                expect(sidePositions(cube.sides.top)).toEqual([
-                  ["02", "12", "22"],
-                  ["01", "11", "21"],
-                  ["00", "10", "20"]
-                ]);
+                expect(sideColors(cube.sides.top)).toEqual(rotatePatternLeft(TRACKING_PATTERN));
               });
             });
 
@@ -101,11 +101,8 @@ describe("Front Side Moves", () => {
           describe("move left", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[0][0],
-                Direction.Left
-              );
+              paintSide(cube.sides.top, TRACKING_PATTERN);
+              cube.move(cube.sides.front, 0, 0, Direction.Left);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -149,11 +146,7 @@ describe("Front Side Moves", () => {
 
             describe("top side", () => {
               it("rotates the cells to the right", () => {
-                expect(sidePositions(cube.sides.top)).toEqual([
-                  ["20", "10", "00"],
-                  ["21", "11", "01"],
-                  ["22", "12", "02"]
-                ]);
+                expect(sideColors(cube.sides.top)).toEqual(rotatePatternRight(TRACKING_PATTERN));
               });
             });
 
@@ -173,11 +166,7 @@ describe("Front Side Moves", () => {
           describe("move right", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[1][0],
-                Direction.Right
-              );
+              cube.move(cube.sides.front, 1, 0, Direction.Right);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -243,11 +232,7 @@ describe("Front Side Moves", () => {
           describe("move left", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[1][0],
-                Direction.Left
-              );
+              cube.move(cube.sides.front, 1, 0, Direction.Left);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -315,11 +300,8 @@ describe("Front Side Moves", () => {
           describe("move right", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[2][0],
-                Direction.Right
-              );
+              paintSide(cube.sides.bottom, TRACKING_PATTERN);
+              cube.move(cube.sides.front, 2, 0, Direction.Right);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -373,11 +355,7 @@ describe("Front Side Moves", () => {
 
             describe("bottom side", () => {
               it("rotates the cells to the left", () => {
-                expect(sidePositions(cube.sides.bottom)).toEqual([
-                  ["02", "12", "22"],
-                  ["01", "11", "21"],
-                  ["00", "10", "20"]
-                ]);
+                expect(sideColors(cube.sides.bottom)).toEqual(rotatePatternLeft(TRACKING_PATTERN));
               });
             });
           });
@@ -385,11 +363,8 @@ describe("Front Side Moves", () => {
           describe("move left", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[2][0],
-                Direction.Left
-              );
+              paintSide(cube.sides.bottom, TRACKING_PATTERN);
+              cube.move(cube.sides.front, 2, 0, Direction.Left);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -443,11 +418,7 @@ describe("Front Side Moves", () => {
 
             describe("bottom side", () => {
               it("rotates the cells to the right", () => {
-                expect(sidePositions(cube.sides.bottom)).toEqual([
-                  ["20", "10", "00"],
-                  ["21", "11", "01"],
-                  ["22", "12", "02"]
-                ]);
+                expect(sideColors(cube.sides.bottom)).toEqual(rotatePatternRight(TRACKING_PATTERN));
               });
             });
           });
@@ -459,11 +430,8 @@ describe("Front Side Moves", () => {
           describe("move up", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[0][0],
-                Direction.Up
-              );
+              paintSide(cube.sides.left, TRACKING_PATTERN);
+              cube.move(cube.sides.front, 0, 0, Direction.Up);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -507,11 +475,7 @@ describe("Front Side Moves", () => {
 
             describe("left side", () => {
               it("rotates the cells to the left", () => {
-                expect(sidePositions(cube.sides.left)).toEqual([
-                  ["02", "12", "22"],
-                  ["01", "11", "21"],
-                  ["00", "10", "20"]
-                ]);
+                expect(sideColors(cube.sides.left)).toEqual(rotatePatternLeft(TRACKING_PATTERN));
               });
             });
 
@@ -529,11 +493,8 @@ describe("Front Side Moves", () => {
           describe("move down", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[0][0],
-                Direction.Down
-              );
+              paintSide(cube.sides.left, TRACKING_PATTERN);
+              cube.move(cube.sides.front, 0, 0, Direction.Down);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -577,11 +538,7 @@ describe("Front Side Moves", () => {
 
             describe("left side", () => {
               it("rotates the cells to the left", () => {
-                expect(sidePositions(cube.sides.left)).toEqual([
-                  ["20", "10", "00"],
-                  ["21", "11", "01"],
-                  ["22", "12", "02"]
-                ]);
+                expect(sideColors(cube.sides.left)).toEqual(rotatePatternRight(TRACKING_PATTERN));
               });
             });
 
@@ -601,11 +558,7 @@ describe("Front Side Moves", () => {
           describe("move up", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[0][1],
-                Direction.Up
-              );
+              cube.move(cube.sides.front, 0, 1, Direction.Up);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -671,11 +624,7 @@ describe("Front Side Moves", () => {
           describe("move down", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[0][1],
-                Direction.Down
-              );
+              cube.move(cube.sides.front, 0, 1, Direction.Down);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -743,11 +692,8 @@ describe("Front Side Moves", () => {
           describe("move up", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[0][2],
-                Direction.Up
-              );
+              paintSide(cube.sides.right, TRACKING_PATTERN);
+              cube.move(cube.sides.front, 0, 2, Direction.Up);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -801,11 +747,7 @@ describe("Front Side Moves", () => {
 
             describe("right side", () => {
               it("rotates the cells to the right", () => {
-                expect(sidePositions(cube.sides.right)).toEqual([
-                  ["20", "10", "00"],
-                  ["21", "11", "01"],
-                  ["22", "12", "02"]
-                ]);
+                expect(sideColors(cube.sides.right)).toEqual(rotatePatternRight(TRACKING_PATTERN));
               });
             });
           });
@@ -813,11 +755,8 @@ describe("Front Side Moves", () => {
           describe("move down", () => {
             beforeAll(() => {
               cube = new Cube();
-              cube.move(
-                cube.sides.front,
-                cube.sides.front.cells[0][2],
-                Direction.Down
-              );
+              paintSide(cube.sides.right, TRACKING_PATTERN);
+              cube.move(cube.sides.front, 0, 2, Direction.Down);
             });
             describe("front side", () => {
               it("contains the correct cell colors", () => {
@@ -871,11 +810,7 @@ describe("Front Side Moves", () => {
 
             describe("right side", () => {
               it("rotates the cells to the left", () => {
-                expect(sidePositions(cube.sides.right)).toEqual([
-                  ["02", "12", "22"],
-                  ["01", "11", "21"],
-                  ["00", "10", "20"]
-                ]);
+                expect(sideColors(cube.sides.right)).toEqual(rotatePatternLeft(TRACKING_PATTERN));
               });
             });
           });

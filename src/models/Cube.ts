@@ -1,9 +1,24 @@
 import { SidePosition, Color, Direction } from "@/enums";
 import { Side, Cell } from "@/models";
-import type { CubeCells, CubeSides } from "@/models";
+import type { CubeSides } from "@/models";
 
+type Axis = "x" | "y" | "z";
+
+/**
+ * Face coordinates are always as seen from outside that face:
+ * row 0 = top edge, col 0 = left edge.
+ *
+ * Face orientation relative to the cube:
+ * - Front: up=Top, down=Bottom, left=Left, right=Right
+ * - Back:  up=Top, down=Bottom, left=Right, right=Left
+ * - Left:  up=Top, down=Bottom, left=Back, right=Front
+ * - Right: up=Top, down=Bottom, left=Front, right=Back
+ * - Top:   up=Back, down=Front, left=Left, right=Right
+ * - Bottom: up=Front, down=Back, left=Left, right=Right
+ */
 export class Cube {
   sides: CubeSides;
+
   constructor() {
     this.sides = {
       front: new Side(Color.Yellow, SidePosition.Front),
@@ -26,74 +41,281 @@ export class Cube {
     ];
   }
 
-  public move(side: Side, cell: Cell, direction: Direction) {
-    [Direction.Right, Direction.Left].includes(direction)
-      ? this.horizontalMove(side, cell, direction)
-      : this.verticalMove(side, cell, direction);
+  public move(side: Side, row: number, col: number, direction: Direction) {
+    const { axis, layer, clockwise } = this.resolveTurn(
+      side.position,
+      row,
+      col,
+      direction
+    );
+    this.turn(axis, layer, clockwise);
   }
 
-  private updateColors() {
-    this.sides.front.cells = [...this.sides.front.cells];
-    this.sides.top.cells = [...this.sides.top.cells];
-    this.sides.left.cells = [...this.sides.left.cells];
-    this.sides.right.cells = [...this.sides.right.cells];
-    this.sides.back.cells = [...this.sides.back.cells];
-    this.sides.bottom.cells = [...this.sides.bottom.cells];
-  }
+  private resolveTurn(
+    face: SidePosition,
+    row: number,
+    col: number,
+    direction: Direction
+  ): { axis: Axis; layer: number; clockwise: boolean } {
+    const horizontal =
+      direction === Direction.Left || direction === Direction.Right;
 
-  private horizontalMove(side: Side, cell: Cell, direction: Direction) {
-    const original: CubeCells = {
-      front: this.sides.front.xCells(cell.x),
-      right: this.sides.right.xCells(cell.x),
-      back: this.sides.back.xCells(cell.x),
-      left: this.sides.left.xCells(cell.x),
-      top: this.sides.top.xCells(cell.x),
-      bottom: this.sides.bottom.xCells(cell.x)
-    };
-    if (cell.isFirstRow) {
-      direction == Direction.Right
-        ? this.sides.top.rotateLeft()
-        : this.sides.top.rotateRight();
-    } else if (cell.isLastRow) {
-      direction == Direction.Right
-        ? this.sides.bottom.rotateLeft()
-        : this.sides.bottom.rotateRight();
+    switch (face) {
+      case SidePosition.Front:
+        return horizontal
+          ? {
+              axis: "y",
+              layer: row,
+              clockwise: direction === Direction.Right
+            }
+          : {
+              axis: "x",
+              layer: col,
+              clockwise: direction === Direction.Down
+            };
+      case SidePosition.Back:
+        return horizontal
+          ? {
+              axis: "y",
+              layer: row,
+              // Back is mirrored left/right relative to front.
+              clockwise: direction === Direction.Left
+            }
+          : {
+              axis: "x",
+              layer: 2 - col,
+              clockwise: direction === Direction.Down
+            };
+      case SidePosition.Left:
+        return horizontal
+          ? {
+              axis: "y",
+              layer: row,
+              clockwise: direction === Direction.Right
+            }
+          : {
+              // Looking at left: col 0 = Back, col 2 = Front
+              axis: "z",
+              layer: 2 - col,
+              clockwise: direction === Direction.Up
+            };
+      case SidePosition.Right:
+        return horizontal
+          ? {
+              axis: "y",
+              layer: row,
+              clockwise: direction === Direction.Right
+            }
+          : {
+              // Looking at right: col 0 = Front, col 2 = Back
+              axis: "z",
+              layer: col,
+              clockwise: direction === Direction.Down
+            };
+      case SidePosition.Top:
+        return horizontal
+          ? {
+              // Looking down: row 0 = Back, row 2 = Front
+              axis: "z",
+              layer: 2 - row,
+              clockwise: direction === Direction.Right
+            }
+          : {
+              axis: "x",
+              layer: col,
+              clockwise: direction === Direction.Up
+            };
+      case SidePosition.Bottom:
+        return horizontal
+          ? {
+              // Looking at bottom: row 0 = Front, row 2 = Back
+              axis: "z",
+              layer: row,
+              clockwise: direction === Direction.Right
+            }
+          : {
+              axis: "x",
+              layer: col,
+              clockwise: direction === Direction.Down
+            };
+      default:
+        return { axis: "y", layer: row, clockwise: true };
     }
-    //rotates the cube in x position 4 times
-    Array.from({ length: 4 }, () => {
-      const nextSide = side.next(direction);
-      side.cells[cell.x] = original[nextSide];
-      side = this.sides[nextSide];
-    });
-    this.updateColors();
   }
 
-  private verticalMove(side: Side, cell: Cell, direction: Direction) {
-    const original: CubeCells = {
-      front: this.sides.front.yCells(cell.y),
-      right: this.sides.right.yCells(cell.y),
-      back: this.sides.back.yCells(cell.y),
-      left: this.sides.left.yCells(cell.y),
-      top: this.sides.top.yCells(cell.y),
-      bottom: this.sides.bottom.yCells(cell.y)
-    };
-    if (cell.isFirstColumn) {
-      const sideToRotate = this.sides[side.next(Direction.Right)];
-      direction == Direction.Up
-        ? sideToRotate.rotateLeft()
-        : sideToRotate.rotateRight();
-    } else if (cell.isLastColumn) {
-      const sideToRotate = this.sides[side.next(Direction.Left)];
-      direction == Direction.Up
-        ? sideToRotate.rotateRight()
-        : sideToRotate.rotateLeft();
+  private turn(axis: Axis, layer: number, clockwise: boolean) {
+    if (axis === "x") {
+      this.turnX(layer, clockwise);
+    } else if (axis === "y") {
+      this.turnY(layer, clockwise);
+    } else {
+      this.turnZ(layer, clockwise);
     }
-    //rotates the cube in y position 4 times
-    Array.from({ length: 4 }, () => {
-      const nextSide = side.next(direction);
-      [0, 1, 2].forEach(i => (side.cells[i][cell.y] = original[nextSide][i]));
-      side = this.sides[nextSide];
-    });
-    this.updateColors();
+  }
+
+  /**
+   * Rotate around the left-right axis.
+   * layer 0 = Left face, layer 2 = Right face.
+   * clockwise when looking from Right toward Left.
+   *
+   * Matches legacy front vertical moves when inverted via resolveTurn:
+   * front Up => turnX(col, clockwise=false).
+   */
+  private turnX(layer: number, clockwise: boolean) {
+    const { front, top, back, bottom, left, right } = this.sides;
+    const f = this.colorsOfColumn(front, layer);
+    const t = this.colorsOfColumn(top, layer);
+    const b = this.colorsOfColumn(back, layer);
+    const d = this.colorsOfColumn(bottom, layer);
+
+    if (clockwise) {
+      // Looking from +X (right): Front → Bottom → Back → Top → Front
+      this.setColumnColors(front, layer, t);
+      this.setColumnColors(bottom, layer, f);
+      this.setColumnColors(back, layer, d);
+      this.setColumnColors(top, layer, b);
+    } else {
+      // Front → Top → Back → Bottom → Front (legacy front Up)
+      this.setColumnColors(front, layer, d);
+      this.setColumnColors(bottom, layer, b);
+      this.setColumnColors(back, layer, t);
+      this.setColumnColors(top, layer, f);
+    }
+
+    if (layer === 0) {
+      clockwise ? left.rotateRight() : left.rotateLeft();
+    } else if (layer === 2) {
+      clockwise ? right.rotateLeft() : right.rotateRight();
+    }
+  }
+
+  /**
+   * Rotate around the top-bottom axis.
+   * layer 0 = Top face, layer 2 = Bottom face.
+   * clockwise when looking from Top toward Bottom.
+   *
+   * Matches legacy front horizontal Right when clockwise=true.
+   */
+  private turnY(layer: number, clockwise: boolean) {
+    const { front, right, back, left, top, bottom } = this.sides;
+    const f = this.colorsOfRow(front, layer);
+    const r = this.colorsOfRow(right, layer);
+    const b = this.colorsOfRow(back, layer);
+    const l = this.colorsOfRow(left, layer);
+
+    if (clockwise) {
+      // Front → Right → Back → Left → Front
+      this.setRowColors(front, layer, l);
+      this.setRowColors(left, layer, b);
+      this.setRowColors(back, layer, r);
+      this.setRowColors(right, layer, f);
+    } else {
+      this.setRowColors(front, layer, r);
+      this.setRowColors(right, layer, b);
+      this.setRowColors(back, layer, l);
+      this.setRowColors(left, layer, f);
+    }
+
+    if (layer === 0) {
+      clockwise ? top.rotateLeft() : top.rotateRight();
+    } else if (layer === 2) {
+      clockwise ? bottom.rotateLeft() : bottom.rotateRight();
+    }
+  }
+
+  /**
+   * Rotate around the front-back axis.
+   * layer 0 = Front face, layer 2 = Back face.
+   * clockwise when looking from Front toward Back.
+   */
+  private turnZ(layer: number, clockwise: boolean) {
+    const { front, back, top, bottom, left, right } = this.sides;
+
+    if (layer === 0) {
+      // Turn the Front face and the ring around it: Top.row2, Right.col0, Bottom.row0, Left.col2
+      const u = this.colorsOfRow(top, 2);
+      const r = this.colorsOfColumn(right, 0);
+      const d = this.colorsOfRow(bottom, 0);
+      const l = this.colorsOfColumn(left, 2);
+
+      if (clockwise) {
+        this.setRowColors(top, 2, this.reverse(l));
+        this.setColumnColors(right, 0, u);
+        this.setRowColors(bottom, 0, this.reverse(r));
+        this.setColumnColors(left, 2, d);
+        front.rotateRight();
+      } else {
+        this.setRowColors(top, 2, r);
+        this.setColumnColors(right, 0, this.reverse(d));
+        this.setRowColors(bottom, 0, l);
+        this.setColumnColors(left, 2, this.reverse(u));
+        front.rotateLeft();
+      }
+      return;
+    }
+
+    if (layer === 2) {
+      // Turn the Back face and its ring: Top.row0, Left.col0, Bottom.row2, Right.col2
+      const u = this.colorsOfRow(top, 0);
+      const l = this.colorsOfColumn(left, 0);
+      const d = this.colorsOfRow(bottom, 2);
+      const r = this.colorsOfColumn(right, 2);
+
+      if (clockwise) {
+        // Looking from front, back layer CW moves Top.row0 toward Left
+        this.setRowColors(top, 0, r);
+        this.setColumnColors(right, 2, this.reverse(d));
+        this.setRowColors(bottom, 2, l);
+        this.setColumnColors(left, 0, this.reverse(u));
+        back.rotateLeft();
+      } else {
+        this.setRowColors(top, 0, this.reverse(l));
+        this.setColumnColors(left, 0, d);
+        this.setRowColors(bottom, 2, this.reverse(r));
+        this.setColumnColors(right, 2, u);
+        back.rotateRight();
+      }
+      return;
+    }
+
+    // Middle slice S (between front and back)
+    const u = this.colorsOfRow(top, 1);
+    const r = this.colorsOfColumn(right, 1);
+    const d = this.colorsOfRow(bottom, 1);
+    const l = this.colorsOfColumn(left, 1);
+
+    if (clockwise) {
+      this.setRowColors(top, 1, this.reverse(l));
+      this.setColumnColors(right, 1, u);
+      this.setRowColors(bottom, 1, this.reverse(r));
+      this.setColumnColors(left, 1, d);
+    } else {
+      this.setRowColors(top, 1, r);
+      this.setColumnColors(right, 1, this.reverse(d));
+      this.setRowColors(bottom, 1, l);
+      this.setColumnColors(left, 1, this.reverse(u));
+    }
+  }
+
+  private colorsOfRow(side: Side, row: number): Color[] {
+    return side.row(row).map(cell => cell.color);
+  }
+
+  private colorsOfColumn(side: Side, col: number): Color[] {
+    return side.column(col).map(cell => cell.color);
+  }
+
+  private setRowColors(side: Side, row: number, colors: Color[]) {
+    side.cells[row] = colors.map(color => new Cell(color));
+  }
+
+  private setColumnColors(side: Side, col: number, colors: Color[]) {
+    for (let row = 0; row < 3; row++) {
+      side.cells[row][col] = new Cell(colors[row]);
+    }
+  }
+
+  private reverse(colors: Color[]): Color[] {
+    return [...colors].reverse();
   }
 }

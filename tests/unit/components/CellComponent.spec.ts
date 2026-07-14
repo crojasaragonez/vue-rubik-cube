@@ -6,7 +6,7 @@ import { Cell } from "@/models";
 
 describe("CellComponent.vue", () => {
   const wrapper = shallowMount(CellComponent, {
-    props: { cell: new Cell(Color.Orange, 0, 0) }
+    props: { cell: new Cell(Color.Orange), row: 0, col: 0 }
   });
 
   it("has the right text", () => {

@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import SideComponent from "./SideComponent.vue";
-import { Cell, Side } from "@/models";
+import { Side } from "@/models";
 import { Direction } from "@/enums";
 import { useCubeStore } from "@/store";
 
@@ -31,8 +31,8 @@ defineProps<{
 const store = useCubeStore();
 const cube = computed(() => store.cube);
 
-function onMove(cell: Cell, direction: Direction, side: Side) {
-  store.move(side, cell, direction);
+function onMove(row: number, col: number, direction: Direction, side: Side) {
+  store.move(side, row, col, direction);
 }
 </script>
 

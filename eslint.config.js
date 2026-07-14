@@ -3,10 +3,10 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   { ignores: ["dist/**", "node_modules/**", "coverage/**"] },
-  ...pluginVue.configs["flat/essential"],
   ...tseslint.configs.recommended,
+  ...pluginVue.configs["flat/essential"],
   {
-    files: ["**/*.{ts,vue}"],
+    files: ["**/*.vue"],
     languageOptions: {
       parserOptions: {
         parser: tseslint.parser
@@ -14,6 +14,16 @@ export default tseslint.config(
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "off"
+    }
+  },
+  {
+    files: ["**/*.{ts,mts,cts}"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        { allowTernary: true, allowShortCircuit: true }
+      ]
     }
   }
 );

@@ -3,7 +3,6 @@ import { Cube } from "@/models";
 import { Color, Direction } from "@/enums";
 import {
   sideColors,
-  sidePositions,
   paintSide,
   TRACKING_PATTERN,
   rotatePatternLeft,
@@ -86,16 +85,6 @@ describe("Front Side Moves", () => {
                 expect(sideColors(cube.sides.top)).toEqual(rotatePatternLeft(TRACKING_PATTERN));
               });
             });
-
-            describe("bottom side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.bottom)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
           });
 
           describe("move left", () => {
@@ -149,16 +138,6 @@ describe("Front Side Moves", () => {
                 expect(sideColors(cube.sides.top)).toEqual(rotatePatternRight(TRACKING_PATTERN));
               });
             });
-
-            describe("bottom side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.bottom)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
           });
         });
 
@@ -207,26 +186,6 @@ describe("Front Side Moves", () => {
                 ]);
               });
             });
-
-            describe("top side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.top)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
-
-            describe("bottom side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.bottom)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
           });
 
           describe("move left", () => {
@@ -270,26 +229,6 @@ describe("Front Side Moves", () => {
                   [Color.Blue, Color.Blue, Color.Blue],
                   [Color.White, Color.White, Color.White],
                   [Color.Blue, Color.Blue, Color.Blue]
-                ]);
-              });
-            });
-
-            describe("top side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.top)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
-
-            describe("bottom side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.bottom)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
                 ]);
               });
             });
@@ -343,16 +282,6 @@ describe("Front Side Moves", () => {
               });
             });
 
-            describe("top side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.top)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
-
             describe("bottom side", () => {
               it("rotates the cells to the left", () => {
                 expect(sideColors(cube.sides.bottom)).toEqual(rotatePatternLeft(TRACKING_PATTERN));
@@ -402,16 +331,6 @@ describe("Front Side Moves", () => {
                   [Color.Blue, Color.Blue, Color.Blue],
                   [Color.Blue, Color.Blue, Color.Blue],
                   [Color.White, Color.White, Color.White]
-                ]);
-              });
-            });
-
-            describe("top side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.top)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
                 ]);
               });
             });
@@ -478,16 +397,6 @@ describe("Front Side Moves", () => {
                 expect(sideColors(cube.sides.left)).toEqual(rotatePatternLeft(TRACKING_PATTERN));
               });
             });
-
-            describe("right side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.right)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
           });
 
           describe("move down", () => {
@@ -541,16 +450,6 @@ describe("Front Side Moves", () => {
                 expect(sideColors(cube.sides.left)).toEqual(rotatePatternRight(TRACKING_PATTERN));
               });
             });
-
-            describe("right side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.right)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
           });
         });
 
@@ -599,26 +498,6 @@ describe("Front Side Moves", () => {
                 ]);
               });
             });
-
-            describe("left side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.left)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
-
-            describe("right side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.right)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
           });
 
           describe("move down", () => {
@@ -662,26 +541,6 @@ describe("Front Side Moves", () => {
                   [Color.Orange, Color.Yellow, Color.Orange],
                   [Color.Orange, Color.Yellow, Color.Orange],
                   [Color.Orange, Color.Yellow, Color.Orange]
-                ]);
-              });
-            });
-
-            describe("left side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.left)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
-
-            describe("right side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.right)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
                 ]);
               });
             });
@@ -735,16 +594,6 @@ describe("Front Side Moves", () => {
               });
             });
 
-            describe("left side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.left)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
-                ]);
-              });
-            });
-
             describe("right side", () => {
               it("rotates the cells to the right", () => {
                 expect(sideColors(cube.sides.right)).toEqual(rotatePatternRight(TRACKING_PATTERN));
@@ -794,16 +643,6 @@ describe("Front Side Moves", () => {
                   [Color.Orange, Color.Orange, Color.Yellow],
                   [Color.Orange, Color.Orange, Color.Yellow],
                   [Color.Orange, Color.Orange, Color.Yellow]
-                ]);
-              });
-            });
-
-            describe("left side", () => {
-              it("leaves the cells in the original position", () => {
-                expect(sidePositions(cube.sides.left)).toEqual([
-                  ["00", "01", "02"],
-                  ["10", "11", "12"],
-                  ["20", "21", "22"]
                 ]);
               });
             });

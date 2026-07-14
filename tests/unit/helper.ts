@@ -5,11 +5,6 @@ export function sideColors(side: Side) {
   return side.cells.map(row => row.map(cell => cell.color));
 }
 
-/** Visual grid indices — always match array position. */
-export function sidePositions(side: Side) {
-  return side.cells.map((row, x) => row.map((_, y) => `${x}${y}`));
-}
-
 /** Paint a side with a unique color pattern so rotations are observable. */
 export function paintSide(side: Side, pattern: Color[][]) {
   side.cells = pattern.map(row => row.map(color => new Cell(color)));

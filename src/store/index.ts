@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
-import { Cube, Side } from "@/models";
-import { Direction } from "@/enums";
+import { Cube } from "@/models";
+import type { Side } from "@/models";
+import type { Direction } from "@/enums";
 
+/** Thin store: all cube geometry lives in `Cube`. */
 export const useCubeStore = defineStore("cube", () => {
   const cube = reactive(new Cube()) as Cube;
 

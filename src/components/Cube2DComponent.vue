@@ -70,18 +70,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import SideComponent from "./SideComponent.vue";
-import { Side } from "@/models";
-import { Direction } from "@/enums";
-import { useCubeStore } from "@/store";
+import { useCubeMove } from "@/composables/useCubeMove";
 
-const store = useCubeStore();
-const cube = computed(() => store.cube);
-
-function onMove(row: number, col: number, direction: Direction, side: Side) {
-  store.move(side, row, col, direction);
-}
+const { cube, onMove } = useCubeMove();
 </script>
 
 <style scoped lang="css">

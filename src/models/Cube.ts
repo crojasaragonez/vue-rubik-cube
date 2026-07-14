@@ -3,18 +3,59 @@ import { Side, Cell } from "@/models";
 import type { CubeSides } from "@/models";
 
 type Axis = "x" | "y" | "z";
+type LayerKey = "row" | "col" | "2-row" | "2-col";
+type Strip = { get: () => Color[]; set: (colors: Color[]) => void };
 
-/**
- * Facelet coordinates (as drawn on each face DOM, row0 at top / col0 at left):
- *
- * - Front:  up=Top, down=Bottom, left=Left, right=Right
- * - Back:   outside view after CSS rotateY(180): up=Top, left=Right, right=Left
- *           (DOM col0 sits on the physical Right edge of the cube)
- * - Left:   up=Top, down=Bottom, left=Back, right=Front
- * - Right:  up=Top, down=Bottom, left=Front, right=Back
- * - Top:    up=Back, down=Front, left=Left, right=Right
- * - Bottom: up=Front, down=Back, left=Left, right=Right
- */
+const TURN: Record<
+  SidePosition,
+  {
+    h: { axis: Axis; layer: LayerKey; cw: Direction };
+    v: { axis: Axis; layer: LayerKey; cw: Direction };
+  }
+> = {
+  [SidePosition.Front]: {
+    h: { axis: "y", layer: "row", cw: Direction.Right },
+    v: { axis: "x", layer: "col", cw: Direction.Down }
+  },
+  [SidePosition.Back]: {
+    h: { axis: "y", layer: "row", cw: Direction.Left },
+    v: { axis: "x", layer: "2-col", cw: Direction.Up }
+  },
+  [SidePosition.Left]: {
+    h: { axis: "y", layer: "row", cw: Direction.Right },
+    v: { axis: "z", layer: "2-col", cw: Direction.Up }
+  },
+  [SidePosition.Right]: {
+    h: { axis: "y", layer: "row", cw: Direction.Right },
+    v: { axis: "z", layer: "col", cw: Direction.Down }
+  },
+  [SidePosition.Top]: {
+    h: { axis: "z", layer: "2-row", cw: Direction.Right },
+    v: { axis: "x", layer: "col", cw: Direction.Down }
+  },
+  [SidePosition.Bottom]: {
+    h: { axis: "z", layer: "row", cw: Direction.Right },
+    v: { axis: "x", layer: "col", cw: Direction.Down }
+  }
+};
+
+function layerIndex(key: LayerKey, row: number, col: number): number {
+  switch (key) {
+    case "row":
+      return row;
+    case "col":
+      return col;
+    case "2-row":
+      return 2 - row;
+    case "2-col":
+      return 2 - col;
+  }
+}
+
+function reverse(colors: Color[]): Color[] {
+  return [...colors].reverse();
+}
+
 export class Cube {
   sides: CubeSides;
 
@@ -30,124 +71,61 @@ export class Cube {
   }
 
   public get allSides(): Side[] {
-    return [
-      this.sides.front,
-      this.sides.top,
-      this.sides.bottom,
-      this.sides.left,
-      this.sides.right,
-      this.sides.back
-    ];
+    const { front, top, bottom, left, right, back } = this.sides;
+    return [front, top, bottom, left, right, back];
   }
 
   public move(side: Side, row: number, col: number, direction: Direction) {
-    const { axis, layer, clockwise } = this.resolveTurn(
-      side.position,
-      row,
-      col,
-      direction
-    );
-    this.turn(axis, layer, clockwise);
-  }
-
-  private resolveTurn(
-    face: SidePosition,
-    row: number,
-    col: number,
-    direction: Direction
-  ): { axis: Axis; layer: number; clockwise: boolean } {
     const horizontal =
       direction === Direction.Left || direction === Direction.Right;
-
-    switch (face) {
-      case SidePosition.Front:
-        return horizontal
-          ? {
-              axis: "y",
-              layer: row,
-              clockwise: direction === Direction.Right
-            }
-          : {
-              axis: "x",
-              layer: col,
-              clockwise: direction === Direction.Down
-            };
-      case SidePosition.Back:
-        // Outside view: col0 = Right. Vertical click on (*, col) turns X-layer (2-col).
-        return horizontal
-          ? {
-              axis: "y",
-              layer: row,
-              // Mirrored L/R relative to Front
-              clockwise: direction === Direction.Left
-            }
-          : {
-              axis: "x",
-              layer: 2 - col,
-              // Up toward Top = Back → Top = Front Down = clockwise
-              clockwise: direction === Direction.Up
-            };
-      case SidePosition.Left:
-        return horizontal
-          ? {
-              axis: "y",
-              layer: row,
-              clockwise: direction === Direction.Right
-            }
-          : {
-              axis: "z",
-              layer: 2 - col,
-              clockwise: direction === Direction.Up
-            };
-      case SidePosition.Right:
-        return horizontal
-          ? {
-              axis: "y",
-              layer: row,
-              clockwise: direction === Direction.Right
-            }
-          : {
-              axis: "z",
-              layer: col,
-              clockwise: direction === Direction.Down
-            };
-      case SidePosition.Top:
-        return horizontal
-          ? {
-              axis: "z",
-              layer: 2 - row,
-              clockwise: direction === Direction.Right
-            }
-          : {
-              // DOM up = toward Back (row0). That matches Front Up (!clockwise).
-              axis: "x",
-              layer: col,
-              clockwise: direction === Direction.Down
-            };
-      case SidePosition.Bottom:
-        return horizontal
-          ? {
-              axis: "z",
-              layer: row,
-              clockwise: direction === Direction.Right
-            }
-          : {
-              axis: "x",
-              layer: col,
-              clockwise: direction === Direction.Down
-            };
-      default:
-        return { axis: "y", layer: row, clockwise: true };
-    }
+    const spec = TURN[side.position][horizontal ? "h" : "v"];
+    this.turn(spec.axis, layerIndex(spec.layer, row, col), direction === spec.cw);
   }
 
   private turn(axis: Axis, layer: number, clockwise: boolean) {
+    const { front, top, bottom, left, right, back } = this.sides;
+
     if (axis === "x") {
-      this.turnX(layer, clockwise);
+      // Looking from Right: Front → Bottom → Back → Top. Back col is mirrored.
+      this.cycle(
+        [
+          this.col(front, layer),
+          this.col(bottom, layer),
+          this.col(back, 2 - layer),
+          this.col(top, layer)
+        ],
+        clockwise,
+        [true, true, true, true]
+      );
     } else if (axis === "y") {
-      this.turnY(layer, clockwise);
+      // Looking down: Front → Right → Back → Left. Reverse to/from Back.
+      this.cycle(
+        [
+          this.row(front, layer),
+          this.row(right, layer),
+          this.row(back, layer),
+          this.row(left, layer)
+        ],
+        clockwise,
+        clockwise ? [false, false, true, true] : [false, true, true, false]
+      );
     } else {
-      this.turnZ(layer, clockwise);
+      // Looking from Front: Top → Right → Bottom → Left.
+      const evenFlips = [true, false, true, false];
+      const flips =
+        (layer === 2) === clockwise
+          ? evenFlips.map(f => !f)
+          : evenFlips;
+      this.cycle(
+        [
+          this.row(top, 2 - layer),
+          this.col(right, layer),
+          this.row(bottom, layer),
+          this.col(left, 2 - layer)
+        ],
+        clockwise,
+        flips
+      );
     }
 
     if (layer === 0 || layer === 2) {
@@ -155,196 +133,54 @@ export class Cube {
     }
   }
 
+  /** Cycle 4 strips; `flips[i]` reverses colors written into strip i. */
+  private cycle(strips: Strip[], clockwise: boolean, flips: boolean[]) {
+    const src = strips.map(s => s.get());
+    for (let i = 0; i < 4; i++) {
+      const from = clockwise ? (i + 3) % 4 : (i + 1) % 4;
+      const colors = flips[i] ? reverse(src[from]) : src[from];
+      strips[i].set(colors);
+    }
+  }
+
   private rotateOuterFace(axis: Axis, layer: number, clockwise: boolean) {
     const { front, back, left, right, top, bottom } = this.sides;
+    const face =
+      axis === "x"
+        ? layer === 0
+          ? left
+          : right
+        : axis === "y"
+          ? layer === 0
+            ? top
+            : bottom
+          : layer === 0
+            ? front
+            : back;
 
-    if (axis === "x") {
-      const face = layer === 0 ? left : right;
-      if (layer === 0) {
-        if (clockwise) {
-          face.rotateRight();
-        } else {
-          face.rotateLeft();
+    // Outer faces on the far side of an axis (and both Y faces) are mirrored.
+    const mirrored =
+      axis === "y" || (axis === "x" && layer === 2) || (axis === "z" && layer === 2);
+    face.rotate(mirrored ? !clockwise : clockwise);
+  }
+
+  private row(side: Side, index: number): Strip {
+    return {
+      get: () => side.cells[index].map(cell => cell.color),
+      set: colors => {
+        side.cells[index] = colors.map(color => new Cell(color));
+      }
+    };
+  }
+
+  private col(side: Side, index: number): Strip {
+    return {
+      get: () => [0, 1, 2].map(r => side.cells[r][index].color),
+      set: colors => {
+        for (let r = 0; r < 3; r++) {
+          side.cells[r][index] = new Cell(colors[r]);
         }
-      } else if (clockwise) {
-        face.rotateLeft();
-      } else {
-        face.rotateRight();
       }
-      return;
-    }
-
-    if (axis === "y") {
-      const face = layer === 0 ? top : bottom;
-      if (clockwise) {
-        face.rotateLeft();
-      } else {
-        face.rotateRight();
-      }
-      return;
-    }
-
-    const face = layer === 0 ? front : back;
-    if (layer === 0) {
-      if (clockwise) {
-        face.rotateRight();
-      } else {
-        face.rotateLeft();
-      }
-    } else if (clockwise) {
-      face.rotateLeft();
-    } else {
-      face.rotateRight();
-    }
-  }
-
-  /**
-   * Rotate around the left-right axis.
-   * layer 0 = Left, layer 2 = Right.
-   * clockwise = looking from Right: Front → Bottom → Back → Top.
-   * !clockwise (Front Up): Front → Top → Back → Bottom with strip reverses
-   * because Top.row0 faces Back and Bottom.row0 faces Front.
-   */
-  private turnX(layer: number, clockwise: boolean) {
-    const { front, top, back, bottom } = this.sides;
-    // Back col0 is on the physical Right edge (outside view), so Left layer
-    // pairs with Back column 2 and Right layer with Back column 0.
-    const backCol = 2 - layer;
-    const f = this.colorsOfColumn(front, layer);
-    const u = this.colorsOfColumn(top, layer);
-    const b = this.colorsOfColumn(back, backCol);
-    const d = this.colorsOfColumn(bottom, layer);
-
-    if (clockwise) {
-      // Front Down
-      this.setColumnColors(front, layer, this.reverse(u));
-      this.setColumnColors(top, layer, this.reverse(b));
-      this.setColumnColors(back, backCol, this.reverse(d));
-      this.setColumnColors(bottom, layer, this.reverse(f));
-    } else {
-      // Front Up
-      this.setColumnColors(front, layer, this.reverse(d));
-      this.setColumnColors(top, layer, this.reverse(f));
-      this.setColumnColors(back, backCol, this.reverse(u));
-      this.setColumnColors(bottom, layer, this.reverse(b));
-    }
-  }
-
-  /**
-   * Rotate around the top-bottom axis.
-   * layer 0 = Top, layer 2 = Bottom.
-   * clockwise (Front Right / U'): Front → Right → Back → Left.
-   * Back rows are L/R reversed relative to Front (outside view).
-   */
-  private turnY(layer: number, clockwise: boolean) {
-    const { front, right, back, left } = this.sides;
-    const f = this.colorsOfRow(front, layer);
-    const r = this.colorsOfRow(right, layer);
-    const b = this.colorsOfRow(back, layer);
-    const l = this.colorsOfRow(left, layer);
-
-    if (clockwise) {
-      this.setRowColors(front, layer, l);
-      this.setRowColors(left, layer, this.reverse(b));
-      this.setRowColors(back, layer, this.reverse(r));
-      this.setRowColors(right, layer, f);
-    } else {
-      this.setRowColors(front, layer, r);
-      this.setRowColors(right, layer, this.reverse(b));
-      this.setRowColors(back, layer, this.reverse(l));
-      this.setRowColors(left, layer, f);
-    }
-  }
-
-  /**
-   * Rotate around the front-back axis.
-   * layer 0 = Front, layer 2 = Back.
-   * clockwise = looking from Front: Top → Right → Bottom → Left.
-   */
-  private turnZ(layer: number, clockwise: boolean) {
-    const { top, bottom, left, right } = this.sides;
-
-    if (layer === 0) {
-      const u = this.colorsOfRow(top, 2);
-      const r = this.colorsOfColumn(right, 0);
-      const d = this.colorsOfRow(bottom, 0);
-      const l = this.colorsOfColumn(left, 2);
-
-      if (clockwise) {
-        // Top.row2 ← Left.col2 (up→down becomes right→left on top)
-        this.setRowColors(top, 2, this.reverse(l));
-        this.setColumnColors(right, 0, u);
-        this.setRowColors(bottom, 0, this.reverse(r));
-        this.setColumnColors(left, 2, d);
-      } else {
-        this.setRowColors(top, 2, r);
-        this.setColumnColors(right, 0, this.reverse(d));
-        this.setRowColors(bottom, 0, l);
-        this.setColumnColors(left, 2, this.reverse(u));
-      }
-      return;
-    }
-
-    if (layer === 2) {
-      // Ring around Back (through-storage): Top.row0, Right.col2, Bottom.row2, Left.col0
-      const u = this.colorsOfRow(top, 0);
-      const r = this.colorsOfColumn(right, 2);
-      const d = this.colorsOfRow(bottom, 2);
-      const l = this.colorsOfColumn(left, 0);
-
-      if (clockwise) {
-        // Looking from Front through the cube toward Back
-        this.setRowColors(top, 0, l);
-        this.setColumnColors(left, 0, this.reverse(d));
-        this.setRowColors(bottom, 2, r);
-        this.setColumnColors(right, 2, this.reverse(u));
-      } else {
-        this.setRowColors(top, 0, this.reverse(r));
-        this.setColumnColors(right, 2, d);
-        this.setRowColors(bottom, 2, this.reverse(l));
-        this.setColumnColors(left, 0, u);
-      }
-      return;
-    }
-
-    // Middle slice
-    const u = this.colorsOfRow(top, 1);
-    const r = this.colorsOfColumn(right, 1);
-    const d = this.colorsOfRow(bottom, 1);
-    const l = this.colorsOfColumn(left, 1);
-
-    if (clockwise) {
-      this.setRowColors(top, 1, this.reverse(l));
-      this.setColumnColors(right, 1, u);
-      this.setRowColors(bottom, 1, this.reverse(r));
-      this.setColumnColors(left, 1, d);
-    } else {
-      this.setRowColors(top, 1, r);
-      this.setColumnColors(right, 1, this.reverse(d));
-      this.setRowColors(bottom, 1, l);
-      this.setColumnColors(left, 1, this.reverse(u));
-    }
-  }
-
-  private colorsOfRow(side: Side, row: number): Color[] {
-    return side.row(row).map(cell => cell.color);
-  }
-
-  private colorsOfColumn(side: Side, col: number): Color[] {
-    return side.column(col).map(cell => cell.color);
-  }
-
-  private setRowColors(side: Side, row: number, colors: Color[]) {
-    side.cells[row] = colors.map(color => new Cell(color));
-  }
-
-  private setColumnColors(side: Side, col: number, colors: Color[]) {
-    for (let row = 0; row < 3; row++) {
-      side.cells[row][col] = new Cell(colors[row]);
-    }
-  }
-
-  private reverse(colors: Color[]): Color[] {
-    return [...colors].reverse();
+    };
   }
 }

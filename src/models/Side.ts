@@ -5,40 +5,43 @@ export class Side {
   public cells: Cell[][];
 
   constructor(public color: Color, public position: SidePosition) {
-    this.cells = [
-      [new Cell(color), new Cell(color), new Cell(color)],
-      [new Cell(color), new Cell(color), new Cell(color)],
-      [new Cell(color), new Cell(color), new Cell(color)]
-    ];
+    this.cells = Array.from({ length: 3 }, () =>
+      Array.from({ length: 3 }, () => new Cell(color))
+    );
   }
 
   public row(row: number): Cell[] {
-    if (row > 2 || row < 0) {
-      return [];
-    }
-    return this.cells[row];
+    return row >= 0 && row <= 2 ? this.cells[row] : [];
   }
 
   public column(col: number): Cell[] {
-    if (col > 2 || col < 0) {
+    if (col < 0 || col > 2) {
       return [];
     }
     return [this.cells[0][col], this.cells[1][col], this.cells[2][col]];
   }
 
+  /** Clockwise face turn (as drawn in the 2D/3D face grid). */
+  rotate(clockwise: boolean) {
+    const c = this.cells;
+    this.cells = clockwise
+      ? [
+          [c[2][0], c[1][0], c[0][0]],
+          [c[2][1], c[1][1], c[0][1]],
+          [c[2][2], c[1][2], c[0][2]]
+        ]
+      : [
+          [c[0][2], c[1][2], c[2][2]],
+          [c[0][1], c[1][1], c[2][1]],
+          [c[0][0], c[1][0], c[2][0]]
+        ];
+  }
+
   rotateRight() {
-    this.cells = [
-      [this.cells[2][0], this.cells[1][0], this.cells[0][0]],
-      [this.cells[2][1], this.cells[1][1], this.cells[0][1]],
-      [this.cells[2][2], this.cells[1][2], this.cells[0][2]]
-    ];
+    this.rotate(true);
   }
 
   rotateLeft() {
-    this.cells = [
-      [this.cells[0][2], this.cells[1][2], this.cells[2][2]],
-      [this.cells[0][1], this.cells[1][1], this.cells[2][1]],
-      [this.cells[0][0], this.cells[1][0], this.cells[2][0]]
-    ];
+    this.rotate(false);
   }
 }

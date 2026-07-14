@@ -3,8 +3,8 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
-export default defineConfig({
-  base: process.env.NODE_ENV === "production" ? "/vue-rubik-cube/" : "/",
+export default defineConfig(({ command }) => ({
+  base: command === "build" ? "/vue-rubik-cube/" : "/",
   plugins: [vue()],
   resolve: {
     alias: {
@@ -15,4 +15,4 @@ export default defineConfig({
     environment: "jsdom",
     globals: true
   }
-});
+}));

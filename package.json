@@ -8,6 +8,7 @@
     "serve": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
+    "deploy": "sh deploy.sh",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "lint": "eslint . --fix"

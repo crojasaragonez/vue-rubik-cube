@@ -42,7 +42,7 @@ npm run lint
 ### GitHub Pages deploy
 
 ```
-./deploy.sh
+npm run deploy
 ```
 
-Production assets use base path `/vue-rubik-cube/`.
+Builds with base path `/vue-rubik-cube/` and force-pushes `dist/` to the `gh-pages` branch.
